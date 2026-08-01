@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 public class UserConfig {
 
     @Bean
-    CreateUserUseCase createUserUseCase(UserGateway gateway, IUserMappergit mapper) {
+    CreateUserUseCase createUserUseCase(UserGateway gateway, IUserMapper mapper) {
         return new CreateUserUseCase(gateway, mapper);
     }
 
