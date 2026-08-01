@@ -1,0 +1,98 @@
+package com.github.techChallenge.infrastructure.mappers;
+
+import com.github.techChallenge.domain.user.Address;
+import com.github.techChallenge.domain.user.IUserMapper;
+import com.github.techChallenge.domain.user.User;
+import com.github.techChallenge.domain.user.dto.UserOutputDTO;
+import com.github.techChallenge.infrastructure.entities.user.UserEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+@Component
+public class UserMapper implements IUserMapper {
+    @Override
+    public User fromEntityToDomain(UserEntity userEntity) {
+        Address address = new Address(
+            userEntity.getAddress().getAddress(),
+            userEntity.getAddress().getNumber(),
+            userEntity.getAddress().getComplement(),
+            userEntity.getAddress().getZipCode(),
+            userEntity.getAddress().getNeighborhood(),
+            userEntity.getAddress().getCity(),
+            userEntity.getAddress().getState(),
+            userEntity.getAddress().getCountry()
+        );
+
+        return new User(
+            userEntity.getId(),
+            userEntity.getName(),
+            userEntity.getLogin(),
+            userEntity.getPassword(),
+            userEntity.getLevel(),
+            address,
+            userEntity.getCreatedAt(),
+            userEntity.getUpdatedAt()
+        );
+
+    }
+
+    @Override
+    public UserOutputDTO fromDomainToOutputDTO(User user) {
+        return new UserOutputDTO(
+            user.getId(),
+            user.getName(),
+            user.getLogin(),
+            user.getLevel(),
+            user.getAddress(),
+            user.getCreatedAt(),
+            user.getUpdatedAt()
+        );
+    }
+
+    @Override
+    public Page<User> fromEntityPageToDomainPage(Page<UserEntity> entitiesPage) {
+        return entitiesPage.map(u -> {
+            Address address = new Address(
+                    u.getAddress().getAddress(),
+                    u.getAddress().getNumber(),
+                    u.getAddress().getComplement(),
+                    u.getAddress().getZipCode(),
+                    u.getAddress().getNeighborhood(),
+                    u.getAddress().getCity(),
+                    u.getAddress().getState(),
+                    u.getAddress().getCountry()
+            );
+
+            return new User(
+                    u.getId(),
+                    u.getName(),
+                    u.getLogin(),
+                    null,
+                    u.getLevel(),
+                    address,
+                    u.getCreatedAt(),
+                    u.getUpdatedAt()
+            );
+        });
+    }
+
+    @Override
+    public Page<UserOutputDTO> fromDomainPageToOutputDTOPage(Page<User> domainPage) {
+        return domainPage.map(u -> {
+            return new UserOutputDTO(
+                    u.getId(),
+                    u.getName(),
+                    u.getLogin(),
+                    u.getLevel(),
+                    u.getAddress(),
+                    u.getCreatedAt(),
+                    u.getUpdatedAt()
+            );
+        });
+    }
+
+
+}
