@@ -1,15 +1,26 @@
 package com.github.techChallenge.infrastructure.entities.user;
 
 import com.github.techChallenge.domain.user.Address;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
+@Embeddable
 public class AddressEntity {
+    @Column(name = "endereco")
     private String address;
+    @Column(name = "numero")
     private String number;
+    @Column(name = "complemento")
     private String complement;
+    @Column(name = "codigo_postal")
     private String zipCode;
+    @Column(name = "bairro")
     private String neighborhood;
+    @Column(name = "cidade")
     private String city;
+    @Column(name = "estado")
     private String state;
+    @Column(name = "pais")
     private String country;
 
     public AddressEntity() {}
