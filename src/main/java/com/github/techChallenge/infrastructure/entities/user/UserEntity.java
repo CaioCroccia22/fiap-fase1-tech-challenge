@@ -13,13 +13,20 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(name = "nome", length = 50)
     private String name;
+    @Column(name = "login", unique = true, nullable = false)
     private String login;
+    @Column(name = "senha", nullable = false)
     private String password;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "level", nullable = false)
     private UserLevel level;
     @Embedded
     private AddressEntity address;
+    @Column(name = "data_de_criacao", nullable = false)
     private LocalDateTime createdAt;
+    @Column(name = "data_de_atualizacao")
     private LocalDateTime updatedAt;
 
     public Long getId() {
