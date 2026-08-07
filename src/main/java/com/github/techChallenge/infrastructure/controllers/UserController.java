@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import jakarta.validation.Valid;
+
 import java.net.URI;
 
 @RestController
@@ -38,7 +40,8 @@ public class UserController implements IUserController {
 
     @PostMapping("/")
     @Override
-    public ResponseEntity<UserOutputDTO> create(@RequestBody UserCreateInputDTO dto) {
+    public ResponseEntity<UserOutputDTO> create(
+            @Valid @RequestBody UserCreateInputDTO dto) {
         UserOutputDTO response = this.createUserUseCase.execute(dto);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -50,14 +53,13 @@ public class UserController implements IUserController {
 
     @PutMapping("/{id}")
     @Override
-    public ResponseEntity<UserOutputDTO> update(@RequestBody UserUpdateInputDTO dto, Long id) {
+    public ResponseEntity<UserOutputDTO> update(
+            @Valid @RequestBody UserUpdateInputDTO dto,
+            @PathVariable("id") Long id
+    ) {
         UserOutputDTO response = this.updateUserUseCase.execute(dto, id);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(response.id())
-                .toUri();
-        return ResponseEntity.created(location).body(response);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
@@ -100,7 +102,7 @@ public class UserController implements IUserController {
     @PatchMapping("/change-password/{id}")
     public ResponseEntity<Void> changePassword(
             @PathVariable("id") Long id,
-            @RequestBody UserChangePasswordInputDTO inputDTO) {
+            @Valid @RequestBody UserChangePasswordInputDTO inputDTO) {
         return null;
     }
 }

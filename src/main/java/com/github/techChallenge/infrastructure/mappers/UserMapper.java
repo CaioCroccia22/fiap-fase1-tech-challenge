@@ -29,6 +29,7 @@ public class UserMapper implements IUserMapper {
         return new User(
             userEntity.getId(),
             userEntity.getName(),
+            userEntity.getEmail(),
             userEntity.getLogin(),
             userEntity.getPassword(),
             userEntity.getLevel(),
@@ -44,6 +45,7 @@ public class UserMapper implements IUserMapper {
         return new UserOutputDTO(
             user.getId(),
             user.getName(),
+            user.getEmail(),
             user.getLogin(),
             user.getLevel(),
             user.getAddress(),
@@ -69,6 +71,7 @@ public class UserMapper implements IUserMapper {
             return new User(
                     u.getId(),
                     u.getName(),
+                    u.getEmail(),
                     u.getLogin(),
                     null,
                     u.getLevel(),
@@ -85,6 +88,7 @@ public class UserMapper implements IUserMapper {
             return new UserOutputDTO(
                     u.getId(),
                     u.getName(),
+                    u.getEmail(),
                     u.getLogin(),
                     u.getLevel(),
                     u.getAddress(),
