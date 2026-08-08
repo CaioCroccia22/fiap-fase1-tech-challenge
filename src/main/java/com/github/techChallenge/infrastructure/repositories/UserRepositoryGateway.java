@@ -76,4 +76,14 @@ public class UserRepositoryGateway implements IUserRepository {
 
         this.repository.delete(entity.get());
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return repository.existsByEmailIgnoreCase(email);
+    }
+
+    @Override
+    public boolean existsByLogin(String login) {
+        return repository.existsByLoginIgnoreCase(login);
+    }
 }

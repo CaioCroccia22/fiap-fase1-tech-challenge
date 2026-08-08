@@ -8,6 +8,10 @@ import com.github.techChallenge.application.repositories.IUserRepository;
 import com.github.techChallenge.domain.user.dto.UserUpdateInputDTO;
 import org.springframework.data.domain.Page;
 
+import com.github.techChallenge.shared.EmailAlreadyExistsException;
+import com.github.techChallenge.shared.LoginAlreadyExistsException;
+
+import java.util.Locale;
 import java.util.List;
 
 public class UserGateway implements IUserGateway {
@@ -20,10 +24,31 @@ public class UserGateway implements IUserGateway {
 
     @Override
     public User create(UserCreateInputDTO dto) {
-        User user = new User(dto);
-        user.create();
-        user = this.repository.create(user);
-        return user;
+
+        String normalizedEmail = dto.email()
+                .trim()
+                .toLowerCase(Locale.ROOT);
+
+        String normalizedLogin = dto.login()
+                .trim()
+                .toLowerCase(Locale.ROOT);
+
+        if (repository.existsByEmail(normalizedEmail)) {
+            throw new EmailAlreadyExistsException();
+        }
+
+        if (repository.existsByLogin(normalizedLogin)) {
+            throw new LoginAlreadyExistsException();
+        }
+        User user = User.create(
+                dto.name().trim(),
+                normalizedEmail,
+                normalizedLogin,
+                dto.password(),
+                dto.level(),
+                dto.address()
+        );
+        return repository.create(user);
     }
 
     @Override

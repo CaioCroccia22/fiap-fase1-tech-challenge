@@ -15,6 +15,8 @@ public class UserEntity {
     private Long id;
     @Column(name = "nome", length = 50)
     private String name;
+    @Column(name = "email", nullable = false, unique = true, length = 255)
+    private String email;
     @Column(name = "login", unique = true, nullable = false)
     private String login;
     @Column(name = "senha", nullable = false)
@@ -33,9 +35,7 @@ public class UserEntity {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) {this.id = id;}
 
     public String getName() {
         return name;
@@ -44,6 +44,10 @@ public class UserEntity {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getEmail(){return email;}
+
+    public void setEmail(String email){this.email = email;}
 
     public String getLogin() {
         return login;
@@ -89,9 +93,7 @@ public class UserEntity {
         return updatedAt;
     }
 
-    public void setUpdated_at(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+    public void setUpdatedAt(LocalDateTime updatedAt) {this.updatedAt = updatedAt;}
 
     public UserEntity(){}
 
@@ -101,12 +103,11 @@ public class UserEntity {
 
         if (Optional.ofNullable(user.getName()).isPresent()) this.setName(user.getName());
         if (Optional.ofNullable(user.getLogin()).isPresent()) this.setLogin(user.getLogin());
+        if (Optional.ofNullable(user.getEmail()).isPresent()) this.setEmail(user.getEmail());
         if (Optional.ofNullable(user.getPassword()).isPresent()) this.setPassword(user.getPassword());
         if (Optional.ofNullable(user.getLevel()).isPresent()) this.setLevel(user.getLevel());
-        if (Optional.ofNullable(user.getLogin()).isPresent()) this.setLogin(user.getLogin());
         if (Optional.ofNullable(user.getAddress()).isPresent()) this.setAddress(new AddressEntity(user.getAddress()));
-        if (Optional.ofNullable(user.getLogin()).isPresent()) this.setLogin(user.getLogin());
         if (Optional.ofNullable(user.getCreatedAt()).isPresent()) this.setCreatedAt(user.getCreatedAt());
-        if (Optional.ofNullable(user.getUpdatedAt()).isPresent()) this.setCreatedAt(user.getCreatedAt());
+        if (Optional.ofNullable(user.getUpdatedAt()).isPresent()) this.setUpdatedAt(user.getUpdatedAt());
     }
 }
