@@ -1,17 +1,20 @@
 package com.github.techChallenge.infrastructure.repositories;
 
+import com.github.techChallenge.application.exceptions.InvalidCredentialsException;
 import com.github.techChallenge.application.repositories.IUserRepository;
 import com.github.techChallenge.domain.user.IUserMapper;
 import com.github.techChallenge.domain.user.User;
 import com.github.techChallenge.domain.user.dto.UserUpdateInputDTO;
 import com.github.techChallenge.infrastructure.entities.user.AddressEntity;
 import com.github.techChallenge.infrastructure.entities.user.UserEntity;
+import com.github.techChallenge.shared.UnauthorizedException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class UserRepositoryGateway implements IUserRepository {
@@ -25,6 +28,7 @@ public class UserRepositoryGateway implements IUserRepository {
     @Override
     public User create(User user) {
         UserEntity userEntity = new UserEntity(user);
+        userEntity.setCreatedAt(LocalDateTime.now());
         userEntity = this.repository.save(userEntity);
         return this.mapper.fromEntityToDomain(userEntity);
     }
@@ -40,6 +44,7 @@ public class UserRepositoryGateway implements IUserRepository {
         userEntity.setLogin(dto.login());
         userEntity.setLevel(dto.level());
         userEntity.setAddress(addressEntity);
+        userEntity.setUpdatedAt(LocalDateTime.now());
 
         userEntity = this.repository.save(userEntity);
         return this.mapper.fromEntityToDomain(userEntity);
@@ -85,5 +90,13 @@ public class UserRepositoryGateway implements IUserRepository {
     @Override
     public boolean existsByLogin(String login) {
         return repository.existsByLoginIgnoreCase(login);
+    }
+
+    public boolean isValidLoginAndPassword(String login, String password){
+         if(repository.validateLoginAndPassword(login, password) == 0) {
+             throw new InvalidCredentialsException();
+         } else{
+             return true;
+         }
     }
 }

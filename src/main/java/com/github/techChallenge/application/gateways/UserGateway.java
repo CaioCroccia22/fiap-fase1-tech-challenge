@@ -3,7 +3,6 @@ package com.github.techChallenge.application.gateways;
 import com.github.techChallenge.domain.user.IUserMapper;
 import com.github.techChallenge.domain.user.User;
 import com.github.techChallenge.domain.user.dto.UserCreateInputDTO;
-import com.github.techChallenge.domain.user.dto.UserOutputDTO;
 import com.github.techChallenge.application.repositories.IUserRepository;
 import com.github.techChallenge.domain.user.dto.UserUpdateInputDTO;
 import org.springframework.data.domain.Page;
@@ -12,7 +11,6 @@ import com.github.techChallenge.shared.EmailAlreadyExistsException;
 import com.github.techChallenge.shared.LoginAlreadyExistsException;
 
 import java.util.Locale;
-import java.util.List;
 
 public class UserGateway implements IUserGateway {
     private final IUserRepository repository;
@@ -80,5 +78,10 @@ public class UserGateway implements IUserGateway {
     @Override
     public void delete(Long id) {
         this.repository.delete(id);
+    }
+
+    @Override
+    public boolean isValidLogin(String login, String password){
+        return this.repository.isValidLoginAndPassword(login, password);
     }
 }

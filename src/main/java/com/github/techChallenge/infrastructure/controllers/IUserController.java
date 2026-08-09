@@ -114,7 +114,9 @@ public interface IUserController {
         @Parameter(description = "Dados para edição de novo usuário")
         UserUpdateInputDTO dto,
         @Parameter(description = "ID do usuário a ser editado")
-        Long id);
+        Long id,
+        @Parameter(description = "Senha para o usuário se autenticar")
+        String password);
 
     @Operation(
         summary = "Buscar por nome"
@@ -159,7 +161,11 @@ public interface IUserController {
         @Parameter(description = "Página da paginação da listagem. Valor padrão '0'.", example = "0", required = false)
         int page,
         @Parameter(description = "Quantidade de registros por página. Valor padrão '10'.", example = "10", required = false)
-        int offset);
+        int offset,
+        @Parameter(description = "Id do usuário para autenticação")
+        Long id,
+        @Parameter(description = "Senha para o usuário se autenticar")
+        String password);
 
     @Operation(
         summary = "Buscar por ID"
@@ -200,7 +206,9 @@ public interface IUserController {
     })
     ResponseEntity<UserOutputDTO> findByID(
         @Parameter(description = "ID do usuário a ser localizado")
-        Long id
+        Long id,
+        @Parameter(description = "Senha para o usuário se autenticar")
+        String password
     );
 
     @Operation(
@@ -236,7 +244,11 @@ public interface IUserController {
         @Parameter(description = "Página da paginação da listagem. Valor padrão '0'.", example = "0", required = false)
         int page,
         @Parameter(description = "Quantidade de registros por página. Valor padrão '10'.", example = "10", required = false)
-        int offset);
+        int offset,
+        @Parameter(description = "Id do usuário para autenticação")
+        Long id,
+        @Parameter(description = "Senha para o usuário se autenticar")
+        String password);
 
     @Operation(
         summary = "Remover usuário"
@@ -266,7 +278,9 @@ public interface IUserController {
     })
     ResponseEntity<Void> delete(
         @Parameter(description = "ID do usuário a ser removido")
-        Long id);
+        Long id,
+        @Parameter(description = "Senha para o usuário se autenticar")
+        String password);
 
     @Operation(
         summary = "Alterar a senha do usuário."

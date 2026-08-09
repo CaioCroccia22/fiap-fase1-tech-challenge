@@ -1,6 +1,7 @@
 package com.github.techChallenge.infrastructure.controllers;
 
 import com.github.techChallenge.application.usecases.user.*;
+import com.github.techChallenge.application.validators.UserValidator;
 import com.github.techChallenge.domain.user.dto.UserChangePasswordInputDTO;
 import com.github.techChallenge.domain.user.dto.UserCreateInputDTO;
 import com.github.techChallenge.domain.user.dto.UserOutputDTO;
@@ -24,18 +25,21 @@ public class UserController implements IUserController {
     private final FindUserUseCase findUserUseCase;
     private final ListUserUseCase listUserUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
+    private final UserValidator userValidator;
 
     public UserController(CreateUserUseCase createUserUseCase,
                           UpdateUserUseCase updateUserUseCase,
                           FindUserUseCase findUserUseCase,
                           ListUserUseCase listUserUseCase,
-                          DeleteUserUseCase deleteUserUseCase
-                          ) {
+                          DeleteUserUseCase deleteUserUseCase,
+                          UserValidator userValidator
+    ) {
         this.createUserUseCase = createUserUseCase;
         this.updateUserUseCase = updateUserUseCase;
         this.findUserUseCase = findUserUseCase;
         this.listUserUseCase = listUserUseCase;
         this.deleteUserUseCase = deleteUserUseCase;
+        this.userValidator = userValidator;
     }
 
     @PostMapping("/")
@@ -55,16 +59,20 @@ public class UserController implements IUserController {
     @Override
     public ResponseEntity<UserOutputDTO> update(
             @Valid @RequestBody UserUpdateInputDTO dto,
-            @PathVariable("id") Long id
+            @PathVariable("id") Long id,
+            @RequestParam("password") String password
     ) {
+        userValidator.validateLoginAndPassword(id, password);
         UserOutputDTO response = this.updateUserUseCase.execute(dto, id);
-
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
     @Override
-    public ResponseEntity<UserOutputDTO> findByID(@PathVariable("id") Long id) {
+    public ResponseEntity<UserOutputDTO> findByID(
+            @PathVariable("id") Long id,
+            @RequestParam("password") String password) {
+        userValidator.validateLoginAndPassword(id, password);
         UserOutputDTO dto = this.findUserUseCase.execute(id);
 
         return ResponseEntity.ok(dto);
@@ -75,7 +83,10 @@ public class UserController implements IUserController {
     public ResponseEntity<Page<UserOutputDTO>> list(
         @RequestParam("name") String name,
         @RequestParam(value = "page", defaultValue = "0") int page,
-        @RequestParam(value = "offset", defaultValue = "10") int offset) {
+        @RequestParam(value = "offset", defaultValue = "10") int offset,
+        @RequestParam("id") Long id,
+        @RequestParam("password") String password) {
+        userValidator.validateLoginAndPassword(id, password);
         Page<UserOutputDTO> users = this.listUserUseCase.execute(name, page, offset);
 
         return ResponseEntity.ok(users);
@@ -85,7 +96,10 @@ public class UserController implements IUserController {
     @GetMapping("/")
     public ResponseEntity<Page<UserOutputDTO>> list(
         @RequestParam(value = "page", defaultValue = "0") int page,
-        @RequestParam(value = "offset", defaultValue = "10") int offset) {
+        @RequestParam(value = "offset", defaultValue = "10") int offset,
+        @RequestParam("id") Long id,
+        @RequestParam("password") String password) {
+        userValidator.validateLoginAndPassword(id, password);
         Page<UserOutputDTO> users = this.listUserUseCase.execute(page, offset);
 
         return ResponseEntity.ok(users);
@@ -93,7 +107,10 @@ public class UserController implements IUserController {
 
     @Override
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> delete(
+            @PathVariable("id") Long id,
+            @RequestParam("password") String password) {
+        userValidator.validateLoginAndPassword(id, password);
         this.deleteUserUseCase.execute(id);
         return ResponseEntity.noContent().build();
     }

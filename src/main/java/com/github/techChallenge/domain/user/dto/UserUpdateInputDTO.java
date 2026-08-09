@@ -26,7 +26,6 @@ public record UserUpdateInputDTO(
                 requiredMode = Schema.RequiredMode.REQUIRED
         )
         String login,
-
         @Schema(
                 description = "Nível de acesso do usuário",
                 requiredMode = Schema.RequiredMode.REQUIRED

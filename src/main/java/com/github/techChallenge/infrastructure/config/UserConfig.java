@@ -2,6 +2,7 @@ package com.github.techChallenge.infrastructure.config;
 
 import com.github.techChallenge.application.gateways.UserGateway;
 import com.github.techChallenge.application.usecases.user.*;
+import com.github.techChallenge.application.validators.UserValidator;
 import com.github.techChallenge.domain.user.IUserMapper;
 import com.github.techChallenge.infrastructure.mappers.UserMapper;
 import com.github.techChallenge.infrastructure.repositories.UserRepositoryGateway;
@@ -37,6 +38,11 @@ public class UserConfig {
     }
 
     @Bean
+    public UserValidator userValidator(UserGateway gateway, UserMapper userMapper) {
+        return new UserValidator(gateway, userMapper);
+    }
+
+    @Bean
     UserGateway userGateway(UserRepositoryGateway userRepositoryGateway, UserMapper userMapper) {
         return new UserGateway(userRepositoryGateway, userMapper);
     }
@@ -45,4 +51,6 @@ public class UserConfig {
     UserRepositoryGateway userRepositoryGateway() {
         return new UserRepositoryGateway();
     }
+
+
 }

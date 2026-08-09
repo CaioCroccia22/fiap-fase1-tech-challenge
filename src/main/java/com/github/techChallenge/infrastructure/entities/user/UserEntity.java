@@ -4,6 +4,7 @@ import com.github.techChallenge.domain.user.User;
 import com.github.techChallenge.domain.user.UserLevel;
 import jakarta.persistence.*;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
