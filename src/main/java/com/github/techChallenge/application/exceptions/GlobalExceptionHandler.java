@@ -19,42 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler  {
-
-    private static final String TYPE_BASE = "https://api.techchallenge.com/errors/";
-
-    @ExceptionHandler(UserNotFoundException.class)
-    public ProblemDetail handleUserNotFound(UserNotFoundException ex) {
-        return this.buildProblem(HttpStatus.NOT_FOUND, "Usuário não encontrado", ex);
-    }
-
-    @ExceptionHandler(DuplicateEmailException.class)
-    public ProblemDetail handleDuplicateEmail(DuplicateEmailException ex) {
-        return this.buildProblem(HttpStatus.CONFLICT, "E-mail já cadastrado", ex);
-    }
-
-    @ExceptionHandler(InvalidCredentialsException.class)
-    public ProblemDetail handleInvalidCredentials(InvalidCredentialsException ex) {
-        return this.buildProblem(HttpStatus.UNAUTHORIZED, "Credenciais inválidas", ex);
-    }
-
-    @ExceptionHandler(InvalidPasswordException.class)
-    public ProblemDetail handleInvalidPassword(InvalidPasswordException ex) {
-        return this.buildProblem(HttpStatus.BAD_REQUEST, "Senha inválida", ex);
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ProblemDetail handleUnexpected(Exception ex) {
-        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                "Ocorreu um erro inesperado ao processar a requisição. Tente novamente mais tarde.");
-        problem.setTitle("Erro interno do servidor");
-        problem.setType(URI.create(TYPE_BASE + "internal-error"));
-        problem.setProperty("errorCode", "internal-error");
-        problem.setProperty("timestamp", LocalDateTime.now());
-        return problem;
-    }
-
+public class GlobalExceptionHandler {
 
     private static final Logger logger =
             LoggerFactory.getLogger(GlobalExceptionHandler.class);
@@ -67,22 +32,74 @@ public class GlobalExceptionHandler  {
         this.problemDetailFactory = problemDetailFactory;
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ProblemDetail> handleUserNotFound(
+            UserNotFoundException exception,
+            HttpServletRequest request
+    ) {
+        return buildResponse(
+                HttpStatus.NOT_FOUND,
+                "Usuário não encontrado",
+                exception.getMessage(),
+                exception.getErrorCode(),
+                request
+        );
+    }
+
+    @ExceptionHandler(DuplicateEmailException.class)
+    public ResponseEntity<ProblemDetail> handleDuplicateEmail(
+            DuplicateEmailException exception,
+            HttpServletRequest request
+    ) {
+        return buildResponse(
+                HttpStatus.CONFLICT,
+                "E-mail já cadastrado",
+                exception.getMessage(),
+                exception.getErrorCode(),
+                request
+        );
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ProblemDetail> handleInvalidCredentials(
+            InvalidCredentialsException exception,
+            HttpServletRequest request
+    ) {
+        return buildResponse(
+                HttpStatus.UNAUTHORIZED,
+                "Credenciais inválidas",
+                exception.getMessage(),
+                exception.getErrorCode(),
+                request
+        );
+    }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<ProblemDetail> handleInvalidPassword(
+            InvalidPasswordException exception,
+            HttpServletRequest request
+    ) {
+        return buildResponse(
+                HttpStatus.BAD_REQUEST,
+                "Senha inválida",
+                exception.getMessage(),
+                exception.getErrorCode(),
+                request
+        );
+    }
+
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<ProblemDetail> handleConflict(
             ConflictException exception,
             HttpServletRequest request
     ) {
-        ProblemDetail problemDetail = problemDetailFactory.create(
+        return buildResponse(
                 HttpStatus.CONFLICT,
                 exception.getTitle(),
                 exception.getMessage(),
                 exception.getCode(),
                 request
         );
-
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(problemDetail);
     }
 
     @ExceptionHandler(NotFoundException.class)
@@ -90,17 +107,13 @@ public class GlobalExceptionHandler  {
             NotFoundException exception,
             HttpServletRequest request
     ) {
-        ProblemDetail problemDetail = problemDetailFactory.create(
+        return buildResponse(
                 HttpStatus.NOT_FOUND,
                 exception.getTitle(),
                 exception.getMessage(),
                 exception.getCode(),
                 request
         );
-
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(problemDetail);
     }
 
     @ExceptionHandler(UnauthorizedException.class)
@@ -108,17 +121,13 @@ public class GlobalExceptionHandler  {
             UnauthorizedException exception,
             HttpServletRequest request
     ) {
-        ProblemDetail problemDetail = problemDetailFactory.create(
+        return buildResponse(
                 HttpStatus.UNAUTHORIZED,
                 exception.getTitle(),
                 exception.getMessage(),
                 exception.getCode(),
                 request
         );
-
-        return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body(problemDetail);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -158,17 +167,13 @@ public class GlobalExceptionHandler  {
             HttpMessageNotReadableException exception,
             HttpServletRequest request
     ) {
-        ProblemDetail problemDetail = problemDetailFactory.create(
+        return buildResponse(
                 HttpStatus.BAD_REQUEST,
                 "Requisição inválida",
                 "O corpo da requisição está ausente ou possui formato inválido.",
                 "INVALID_REQUEST_BODY",
                 request
         );
-
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(problemDetail);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -181,17 +186,13 @@ public class GlobalExceptionHandler  {
                 exception
         );
 
-        ProblemDetail problemDetail = problemDetailFactory.create(
+        return buildResponse(
                 HttpStatus.CONFLICT,
                 "Conflito de dados",
                 "A operação viola uma restrição de integridade dos dados.",
                 "DATA_INTEGRITY_CONFLICT",
                 request
         );
-
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(problemDetail);
     }
 
     @ExceptionHandler(Exception.class)
@@ -204,16 +205,32 @@ public class GlobalExceptionHandler  {
                 exception
         );
 
-        ProblemDetail problemDetail = problemDetailFactory.create(
+        return buildResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 "Erro interno do servidor",
                 "Ocorreu um erro inesperado ao processar a solicitação.",
                 "INTERNAL_SERVER_ERROR",
                 request
         );
+    }
+
+    private ResponseEntity<ProblemDetail> buildResponse(
+            HttpStatus status,
+            String title,
+            String detail,
+            String code,
+            HttpServletRequest request
+    ) {
+        ProblemDetail problemDetail = problemDetailFactory.create(
+                status,
+                title,
+                detail,
+                code,
+                request
+        );
 
         return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .status(status)
                 .body(problemDetail);
     }
 }
