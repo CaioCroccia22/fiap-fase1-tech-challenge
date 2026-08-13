@@ -1,24 +1,31 @@
 package com.github.techChallenge.application.gateways;
 
+import com.github.techChallenge.application.exceptions.InvalidPasswordException;
 import com.github.techChallenge.domain.user.IUserMapper;
 import com.github.techChallenge.domain.user.User;
 import com.github.techChallenge.domain.user.dto.UserCreateInputDTO;
-import com.github.techChallenge.domain.user.dto.UserOutputDTO;
 import com.github.techChallenge.application.repositories.IUserRepository;
 import com.github.techChallenge.domain.user.dto.UserUpdateInputDTO;
+import com.github.techChallenge.infrastructure.security.ISecurityConfig;
+import com.github.techChallenge.infrastructure.security.SecurityConfig;
+import com.github.techChallenge.shared.UnauthorizedException;
+import com.github.techChallenge.shared.UserNotFoundException;
 import org.springframework.data.domain.Page;
 
 import com.github.techChallenge.shared.EmailAlreadyExistsException;
 import com.github.techChallenge.shared.LoginAlreadyExistsException;
 
 import java.util.Locale;
-import java.util.List;
 
 public class UserGateway implements IUserGateway {
+
     private final IUserRepository repository;
+    private final ISecurityConfig securityConfig;
     private final IUserMapper mapper;
-    public UserGateway(IUserRepository repository, IUserMapper mapper) {
+
+    public UserGateway(IUserRepository repository, IUserMapper mapper,ISecurityConfig securityConfig) {
         this.repository = repository;
+        this.securityConfig = securityConfig;
         this.mapper = mapper;
     }
 
@@ -40,14 +47,16 @@ public class UserGateway implements IUserGateway {
         if (repository.existsByLogin(normalizedLogin)) {
             throw new LoginAlreadyExistsException();
         }
+
         User user = User.create(
                 dto.name().trim(),
                 normalizedEmail,
                 normalizedLogin,
-                dto.password(),
+                securityConfig.passwordEncoder(dto.password()),
                 dto.level(),
-                dto.address()
-        );
+                dto.address());
+
+
         return repository.create(user);
     }
 
@@ -80,5 +89,23 @@ public class UserGateway implements IUserGateway {
     @Override
     public void delete(Long id) {
         this.repository.delete(id);
+    }
+
+    @Override
+    public boolean validate(String rawPassword, String login){
+
+        if (!repository.existsByLogin(login)) {throw new UnauthorizedException() {
+        };}
+
+        String encryptPasswordDataBase = this.repository.getEncryptPasswordByLogin(login);
+
+        if(encryptPasswordDataBase.isEmpty()){throw new InvalidPasswordException("Senha inválida e/ou vazia");};
+
+        if(securityConfig.passwordValidate(rawPassword, encryptPasswordDataBase)
+                && repository.existsByLogin(login)){
+            return true;
+        } else {
+            throw new UnauthorizedException();
+        }
     }
 }

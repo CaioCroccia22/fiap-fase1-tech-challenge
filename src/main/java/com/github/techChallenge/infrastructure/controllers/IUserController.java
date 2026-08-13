@@ -14,8 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
-
 @Tag(
     name="Usuários",
     description="API de gestão de usuários"
@@ -311,4 +309,46 @@ public interface IUserController {
         )
     })
     ResponseEntity<Void> changePassword(Long id, UserChangePasswordInputDTO inputDTO);
+
+    @Operation(
+            summary = "Autenticação em sistema"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Autenticação realizada com sucesso",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = Boolean.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Dados de autenticação inválidos",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ResponseError.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Credenciais inválidas",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ResponseError.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Ocorreu um erro do lado do servidor",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ResponseError.class)
+                    )
+            )
+    })
+    ResponseEntity<Boolean> authUser(
+            @Parameter(description = "Credenciais de login e senha")
+            UserAuthInputDTO dto
+    );
 }

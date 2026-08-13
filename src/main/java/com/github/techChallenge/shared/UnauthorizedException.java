@@ -1,12 +1,10 @@
 package com.github.techChallenge.shared;
 
-public abstract class UnauthorizedException extends ApplicationException {
+public class UnauthorizedException extends ApplicationException {
 
-    protected UnauthorizedException(
-            String code,
-            String title,
-            String message
-    ) {
-        super(code, title, message);
+    public UnauthorizedException() {
+        super("USER_UNATHORIZED",
+                "Usuário não autorizado",
+                "Por favor verifique se o e-mail e senha estão corretos");
     }
 }

@@ -2,9 +2,12 @@ package com.github.techChallenge.infrastructure.config;
 
 import com.github.techChallenge.application.gateways.UserGateway;
 import com.github.techChallenge.application.usecases.user.*;
+import com.github.techChallenge.application.validators.UserValidator;
 import com.github.techChallenge.domain.user.IUserMapper;
 import com.github.techChallenge.infrastructure.mappers.UserMapper;
 import com.github.techChallenge.infrastructure.repositories.UserRepositoryGateway;
+import com.github.techChallenge.infrastructure.security.ISecurityConfig;
+import com.github.techChallenge.infrastructure.security.SecurityConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -37,12 +40,18 @@ public class UserConfig {
     }
 
     @Bean
-    UserGateway userGateway(UserRepositoryGateway userRepositoryGateway, UserMapper userMapper) {
-        return new UserGateway(userRepositoryGateway, userMapper);
+    UserValidator UserValidator(UserGateway gateway, IUserMapper mapper) {
+        return new UserValidator(gateway, mapper);
+    }
+
+    @Bean
+    UserGateway userGateway(UserRepositoryGateway userRepositoryGateway, UserMapper userMapper, ISecurityConfig securityConfig) {
+        return new UserGateway(userRepositoryGateway, userMapper, securityConfig);
     }
 
     @Bean
     UserRepositoryGateway userRepositoryGateway() {
         return new UserRepositoryGateway();
     }
+
 }

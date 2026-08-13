@@ -1,11 +1,10 @@
 package com.github.techChallenge.infrastructure.controllers;
 
 import com.github.techChallenge.application.usecases.user.*;
-import com.github.techChallenge.domain.user.dto.UserChangePasswordInputDTO;
-import com.github.techChallenge.domain.user.dto.UserCreateInputDTO;
-import com.github.techChallenge.domain.user.dto.UserOutputDTO;
-import com.github.techChallenge.domain.user.dto.UserUpdateInputDTO;
+import com.github.techChallenge.application.validators.UserValidator;
+import com.github.techChallenge.domain.user.dto.*;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,21 +20,23 @@ public class UserController implements IUserController {
 
     private final CreateUserUseCase createUserUseCase;
     private final UpdateUserUseCase updateUserUseCase;
-    private final FindUserUseCase findUserUseCase;
-    private final ListUserUseCase listUserUseCase;
+    private final FindUserUseCase   findUserUseCase;
+    private final ListUserUseCase   listUserUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
+    private final UserValidator     userValidator;
 
     public UserController(CreateUserUseCase createUserUseCase,
                           UpdateUserUseCase updateUserUseCase,
                           FindUserUseCase findUserUseCase,
                           ListUserUseCase listUserUseCase,
-                          DeleteUserUseCase deleteUserUseCase
-                          ) {
+                          DeleteUserUseCase deleteUserUseCase, UserValidator userValidator
+    ) {
         this.createUserUseCase = createUserUseCase;
         this.updateUserUseCase = updateUserUseCase;
         this.findUserUseCase = findUserUseCase;
         this.listUserUseCase = listUserUseCase;
         this.deleteUserUseCase = deleteUserUseCase;
+        this.userValidator = userValidator;
     }
 
     @PostMapping("/")
@@ -105,4 +106,16 @@ public class UserController implements IUserController {
             @Valid @RequestBody UserChangePasswordInputDTO inputDTO) {
         return null;
     }
+
+    @Override
+    @PostMapping("/auth-login")
+    public ResponseEntity<Boolean> authUser(
+            @Valid @RequestBody UserAuthInputDTO dto) {
+       boolean result = this.userValidator.authUser(dto);
+        if (result) {
+            return ResponseEntity.ok(true);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
 }
