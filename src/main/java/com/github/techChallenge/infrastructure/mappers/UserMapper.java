@@ -5,11 +5,8 @@ import com.github.techChallenge.domain.user.IUserMapper;
 import com.github.techChallenge.domain.user.User;
 import com.github.techChallenge.domain.user.dto.UserOutputDTO;
 import com.github.techChallenge.infrastructure.entities.user.UserEntity;
-import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class UserMapper implements IUserMapper {
@@ -97,6 +94,5 @@ public class UserMapper implements IUserMapper {
             );
         });
     }
-
 
 }

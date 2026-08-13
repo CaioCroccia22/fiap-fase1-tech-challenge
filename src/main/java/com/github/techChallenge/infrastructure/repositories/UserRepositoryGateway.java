@@ -6,11 +6,13 @@ import com.github.techChallenge.domain.user.User;
 import com.github.techChallenge.domain.user.dto.UserUpdateInputDTO;
 import com.github.techChallenge.infrastructure.entities.user.AddressEntity;
 import com.github.techChallenge.infrastructure.entities.user.UserEntity;
+import com.github.techChallenge.infrastructure.security.ISecurityConfig;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
@@ -85,5 +87,9 @@ public class UserRepositoryGateway implements IUserRepository {
     @Override
     public boolean existsByLogin(String login) {
         return repository.existsByLoginIgnoreCase(login);
+    }
+
+    public String getEncryptPasswordByLogin(String login){
+          return repository.findPasswordByLogin(login);
     }
 }
