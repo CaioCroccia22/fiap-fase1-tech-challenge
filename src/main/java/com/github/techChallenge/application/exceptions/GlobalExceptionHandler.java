@@ -14,7 +14,9 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import tools.jackson.databind.exc.InvalidFormatException;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -167,6 +169,24 @@ public class GlobalExceptionHandler {
             HttpMessageNotReadableException exception,
             HttpServletRequest request
     ) {
+        if (exception.getCause() instanceof InvalidFormatException cause) {
+            var acceptedValues = cause.getTargetType().getEnumConstants();
+
+            if (acceptedValues != null) {
+                return buildResponse(
+                        HttpStatus.BAD_REQUEST,
+                        "Requisição inválida",
+                        "O valor '%s' não é válido. Valores aceitos: %s."
+                                .formatted(
+                                        cause.getValue(),
+                                        Arrays.toString(acceptedValues)
+                                ),
+                        "INVALID_ENUM_VALUE",
+                        request
+                );
+            }
+        }
+
         return buildResponse(
                 HttpStatus.BAD_REQUEST,
                 "Requisição inválida",
