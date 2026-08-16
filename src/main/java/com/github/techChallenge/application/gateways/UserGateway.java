@@ -61,8 +61,8 @@ public class UserGateway implements IUserGateway {
     }
 
     @Override
-    public User update(UserUpdateInputDTO dto, Long id) {
-        User user = this.repository.update(dto, id);
+    public User update(User user, Long id) {
+        user = this.repository.update(user, id);
         return user;
     }
 
@@ -107,5 +107,24 @@ public class UserGateway implements IUserGateway {
         } else {
             throw new UnauthorizedException();
         }
+    }
+
+    @Override
+    public boolean emailExists(String email, Long id) {
+        return this.repository.existsByEmailAndIdNot(email, id);
+    }
+
+    @Override
+    public boolean loginExists(String login) {
+        return this.repository.existsByLogin(login);
+    }
+
+    @Override
+    public boolean loginExists(String login, Long id) {
+        return this.repository.existsByLoginAndIdNot(login, id);
+    }
+
+    public boolean emailExists(String email) {
+        return this.repository.existsByEmail(email);
     }
 }

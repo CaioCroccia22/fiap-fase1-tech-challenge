@@ -24,4 +24,7 @@ public interface UserRepository
     @Query(value = "SELECT SENHA FROM usuarios WHERE LOGIN = :login", nativeQuery = true)
     String findPasswordByLogin(@Param("login") String login);
 
+    boolean existsByEmailAndIdNot(String email, Long id);
+    boolean existsByLoginAndIdNot(String login, Long id);
+
 }

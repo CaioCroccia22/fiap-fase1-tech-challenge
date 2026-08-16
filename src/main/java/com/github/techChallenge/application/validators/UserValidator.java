@@ -16,4 +16,20 @@ public class UserValidator extends UserUseCase {
         return this.gateway.validate(dto.password(), dto.login());
     }
 
+    public boolean emailExists(String email) {
+        return this.gateway.emailExists(email);
+    }
+
+    public boolean emailExists(String email, Long id) {
+        return this.gateway.emailExists(email, id);
+    }
+
+    public boolean loginExists(String login) {
+        return this.gateway.loginExists(login);
+    }
+
+    public boolean loginExists(String login, Long id) {
+        return this.gateway.loginExists(login, id);
+    }
+
 }

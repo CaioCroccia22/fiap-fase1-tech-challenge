@@ -26,9 +26,7 @@ public class UserEntity {
     private UserLevel level;
     @Embedded
     private AddressEntity address;
-    @Column(name = "data_de_criacao", nullable = false)
     private LocalDateTime createdAt;
-    @Column(name = "data_de_atualizacao")
     private LocalDateTime updatedAt;
 
     public Long getId() {

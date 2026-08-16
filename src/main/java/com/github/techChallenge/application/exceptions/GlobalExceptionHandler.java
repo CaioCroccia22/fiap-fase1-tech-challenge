@@ -62,6 +62,20 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(DuplicateLoginException.class)
+    public ResponseEntity<ProblemDetail> handleDuplicateLogin(
+            DuplicateLoginException exception,
+            HttpServletRequest request
+    ) {
+        return buildResponse(
+                HttpStatus.CONFLICT,
+                "Login já cadastrado",
+                exception.getMessage(),
+                exception.getErrorCode(),
+                request
+        );
+    }
+
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<ProblemDetail> handleInvalidCredentials(
             InvalidCredentialsException exception,

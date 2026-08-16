@@ -20,8 +20,8 @@ public class UserConfig {
     }
 
     @Bean
-    UpdateUserUseCase updateUserUseCase(UserGateway gateway, UserMapper mapper) {
-        return new UpdateUserUseCase(gateway, mapper);
+    UpdateUserUseCase updateUserUseCase(UserGateway gateway, UserMapper mapper, UserValidator userValidator) {
+        return new UpdateUserUseCase(gateway, mapper, userValidator);
     }
 
     @Bean

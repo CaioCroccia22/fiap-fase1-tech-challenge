@@ -3,6 +3,7 @@ package com.github.techChallenge.domain.user.dto;
 import com.github.techChallenge.domain.user.Address;
 import com.github.techChallenge.domain.user.UserLevel;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.EnumeratedValue;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

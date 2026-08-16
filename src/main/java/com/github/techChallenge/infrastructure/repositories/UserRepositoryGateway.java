@@ -32,15 +32,18 @@ public class UserRepositoryGateway implements IUserRepository {
     }
 
     @Override
-    public User update(UserUpdateInputDTO dto, Long id) {
+    public User update(User user, Long id) {
+
         Optional<UserEntity> entity = this.repository.findById(id);
         if (!entity.isPresent()) throw new EntityNotFoundException("Usuário não encontrado");
-        AddressEntity addressEntity = new AddressEntity(dto.address());
+        AddressEntity addressEntity = new AddressEntity(user.getAddress());
 
         UserEntity userEntity = entity.get();
-        userEntity.setName(dto.name());
-        userEntity.setLogin(dto.login());
-        userEntity.setLevel(dto.level());
+        userEntity.setName(user.getName());
+        userEntity.setLogin(user.getLogin());
+        userEntity.setLevel(user.getLevel());
+        userEntity.setEmail(user.getEmail());
+        userEntity.setUpdatedAt(user.getUpdatedAt());
         userEntity.setAddress(addressEntity);
 
         userEntity = this.repository.save(userEntity);
@@ -91,5 +94,15 @@ public class UserRepositoryGateway implements IUserRepository {
 
     public String getEncryptPasswordByLogin(String login){
           return repository.findPasswordByLogin(login);
+    }
+
+    @Override
+    public boolean existsByEmailAndIdNot(String email, Long id) {
+        return this.repository.existsByEmailAndIdNot(email, id);
+    }
+
+    @Override
+    public boolean existsByLoginAndIdNot(String login, Long id) {
+        return this.repository.existsByLoginAndIdNot(login, id);
     }
 }
