@@ -14,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Map;
+
 @Tag(
     name="Usuários",
     description="API de gestão de usuários"
@@ -292,6 +294,14 @@ public interface IUserController {
             )
         ),
         @ApiResponse(
+                responseCode = "402",
+                description = "Conteudo da requisição não processável",
+                content = @Content(
+                        mediaType = MediaType.APPLICATION_JSON_VALUE,
+                        schema = @Schema(implementation = ResponseError.class)
+                )
+        ),
+        @ApiResponse(
             responseCode = "404",
             description = "O usuário que se deseja atualizar não foi encontrado",
             content = @Content(
@@ -308,7 +318,7 @@ public interface IUserController {
             )
         )
     })
-    ResponseEntity<Void> changePassword(Long id, UserChangePasswordInputDTO inputDTO);
+    ResponseEntity<Map<String, Object>> changePassword(Long id, UserChangePasswordInputDTO inputDTO);
 
     @Operation(
             summary = "Autenticação em sistema"
@@ -317,10 +327,7 @@ public interface IUserController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Autenticação realizada com sucesso",
-                    content = @Content(
-                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = Boolean.class)
-                    )
+                    content = @Content
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -347,7 +354,7 @@ public interface IUserController {
                     )
             )
     })
-    ResponseEntity<Boolean> authUser(
+    ResponseEntity<Map<String, Object>> authUser(
             @Parameter(description = "Credenciais de login e senha")
             UserAuthInputDTO dto
     );

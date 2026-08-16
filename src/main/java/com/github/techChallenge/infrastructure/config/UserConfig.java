@@ -54,4 +54,7 @@ public class UserConfig {
         return new UserRepositoryGateway();
     }
 
+    @Bean
+    ChangePasswordUser changePasswordUser(UserGateway gateway, IUserMapper mapper){return new ChangePasswordUser(gateway, mapper);};
+
 }

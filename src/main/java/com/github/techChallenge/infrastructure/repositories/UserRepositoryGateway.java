@@ -1,5 +1,6 @@
 package com.github.techChallenge.infrastructure.repositories;
 
+import com.github.techChallenge.application.exceptions.DuplicateLoginException;
 import com.github.techChallenge.application.exceptions.UserNotFoundException;
 import com.github.techChallenge.application.repositories.IUserRepository;
 import com.github.techChallenge.domain.user.IUserMapper;
@@ -64,6 +65,13 @@ public class UserRepositoryGateway implements IUserRepository {
         return this.mapper.fromEntityToDomain(entity.get());
     }
 
+    public User findByLogin(String login){
+        Optional<UserEntity> entity = this.repository.findByLogin(login.toUpperCase());
+        if (!entity.isPresent()) throw new UserNotFoundException("Usuário não encontrado");
+
+        return this.mapper.fromEntityToDomain(entity.get());
+    }
+
     @Override
     public Page<User> list(int page, int offset) {
         Pageable pageable = PageRequest.of(page, offset);
@@ -87,11 +95,26 @@ public class UserRepositoryGateway implements IUserRepository {
 
     @Override
     public boolean existsByLogin(String login) {
+        System.out.println(repository.existsByLoginIgnoreCase(login));
         return repository.existsByLoginIgnoreCase(login);
     }
 
     public String getEncryptPasswordByLogin(String login){
           return repository.findPasswordByLogin(login);
+    }
+
+    public boolean updatePasswordByLogin(String encryptPasword, String login){
+            if (!this.repository.findByLogin(login).isPresent()) {
+                throw new UserNotFoundException("Usuário não encontrado");
+            }
+            int countUpdateRows = repository.updatePasswordByLogin(login, encryptPasword);
+
+            if(countUpdateRows != 1){
+                throw new DuplicateLoginException("Existem mais de um ou nenhum login cadastrado");
+            }
+
+            return true;
+
     }
 
     @Override

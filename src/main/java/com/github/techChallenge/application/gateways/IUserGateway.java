@@ -17,4 +17,5 @@ public interface IUserGateway {
     boolean loginExists(String login);
     boolean loginExists(String login, Long id);
     boolean existById(Long id);
+    boolean changePassword(String rawPassword, String login);
 }
