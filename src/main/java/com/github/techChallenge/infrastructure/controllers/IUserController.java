@@ -37,7 +37,7 @@ public interface IUserController {
             responseCode = "400",
             description = "Ocorreu um erro com os dados do usuário, durante a tentativa de criação",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
@@ -45,7 +45,7 @@ public interface IUserController {
             responseCode = "401",
             description = "Você não tem permissão para realizar esta ação",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
@@ -53,7 +53,7 @@ public interface IUserController {
             responseCode = "409",
             description = "Já existe um usuário cadastrado com o e-mail ou o login informado",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
@@ -61,7 +61,7 @@ public interface IUserController {
             responseCode = "500",
             description = "Ocorreu um erro do lado do servidor",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         )
@@ -87,7 +87,7 @@ public interface IUserController {
             responseCode = "400",
             description = "Ocorreu um erro com os dados do usuário, durante a tentativa de atualização",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
@@ -95,7 +95,7 @@ public interface IUserController {
             responseCode = "401",
             description = "Você não tem permissão para realizar esta ação",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
@@ -103,7 +103,7 @@ public interface IUserController {
             responseCode = "404",
             description = "O usuário que se deseja atualizar não foi encontrado",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
@@ -111,7 +111,7 @@ public interface IUserController {
             responseCode = "409",
             description = "O e-mail ou o login informado já pertence a outro usuário",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
@@ -119,7 +119,7 @@ public interface IUserController {
             responseCode = "500",
             description = "Ocorreu um erro do lado do servidor",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         )
@@ -146,7 +146,7 @@ public interface IUserController {
                 responseCode = "400",
                 description = "Ocorreu um erro com os dados do usuário, durante a tentativa de atualização",
                 content = @Content(
-                    mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = ApiErrorResponse.class)
                 )
             ),
@@ -154,7 +154,7 @@ public interface IUserController {
                 responseCode = "401",
                 description = "Você não tem permissão para realizar esta ação",
                 content = @Content(
-                    mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = ApiErrorResponse.class)
                 )
             ),
@@ -162,7 +162,7 @@ public interface IUserController {
                 responseCode = "500",
                 description = "Ocorreu um erro do lado do servidor",
                 content = @Content(
-                    mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = ApiErrorResponse.class)
                 )
             )
@@ -191,7 +191,7 @@ public interface IUserController {
             responseCode = "401",
             description = "Você não tem permissão para realizar esta ação",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
@@ -199,7 +199,7 @@ public interface IUserController {
             responseCode = "404",
             description = "Usuário não encontrado",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
@@ -207,7 +207,7 @@ public interface IUserController {
             responseCode = "500",
             description = "Ocorreu um erro do lado do servidor",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         )
@@ -233,7 +233,7 @@ public interface IUserController {
             responseCode = "401",
             description = "Você não tem permissão para realizar esta ação",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
@@ -241,7 +241,7 @@ public interface IUserController {
             responseCode = "500",
             description = "Ocorreu um erro do lado do servidor",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         )
@@ -265,7 +265,7 @@ public interface IUserController {
             responseCode = "401",
             description = "Você não tem permissão para realizar esta ação",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
@@ -273,7 +273,7 @@ public interface IUserController {
             responseCode = "404",
             description = "O usuário que se deseja remover não foi encontrado",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
@@ -281,7 +281,7 @@ public interface IUserController {
             responseCode = "500",
             description = "Ocorreu um erro do lado do servidor",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         )
@@ -303,7 +303,7 @@ public interface IUserController {
             responseCode = "400",
             description = "Ocorreu um erro com os dados do usuário, durante a tentativa de atualização",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
@@ -311,7 +311,7 @@ public interface IUserController {
             responseCode = "401",
             description = "Você não tem permissão para realizar esta ação",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
@@ -319,7 +319,7 @@ public interface IUserController {
             responseCode = "404",
             description = "O usuário que se deseja atualizar não foi encontrado",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
@@ -327,7 +327,7 @@ public interface IUserController {
             responseCode = "500",
             description = "Ocorreu um erro do lado do servidor",
             content = @Content(
-                mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(implementation = ApiErrorResponse.class)
             )
         )
@@ -350,7 +350,7 @@ public interface IUserController {
                     responseCode = "400",
                     description = "Dados de autenticação inválidos",
                     content = @Content(
-                            mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ApiErrorResponse.class)
                     )
             ),
@@ -358,7 +358,7 @@ public interface IUserController {
                     responseCode = "401",
                     description = "Credenciais inválidas",
                     content = @Content(
-                            mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ApiErrorResponse.class)
                     )
             ),
@@ -366,7 +366,7 @@ public interface IUserController {
                     responseCode = "500",
                     description = "Ocorreu um erro do lado do servidor",
                     content = @Content(
-                            mediaType = MediaType.APPLICATION_PROBLEM_JSON_VALUE,
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ApiErrorResponse.class)
                     )
             )
