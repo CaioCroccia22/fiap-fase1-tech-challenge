@@ -27,4 +27,5 @@ public interface IUserRepository {
 
     boolean existsByEmailAndIdNot(String email, Long id);
     boolean existsByLoginAndIdNot(String login, Long id);
+    boolean existsById(Long id);
 }

@@ -9,6 +9,7 @@ import com.github.techChallenge.domain.user.IUserMapper;
 import com.github.techChallenge.domain.user.User;
 import com.github.techChallenge.domain.user.dto.UserOutputDTO;
 import com.github.techChallenge.domain.user.dto.UserUpdateInputDTO;
+import com.github.techChallenge.infrastructure.entities.user.UserEntity;
 
 import java.util.Optional;
 
@@ -21,6 +22,8 @@ public class UpdateUserUseCase extends UserUseCase {
     }
 
     public UserOutputDTO execute(UserUpdateInputDTO dto, Long id) {
+        if (!this.gateway.existById(id)) throw new UserNotFoundException("Usuário não encontrado");
+
         if (this.userValidator.emailExists(dto.email(), id))
             throw new DuplicateEmailException(dto.email());
 

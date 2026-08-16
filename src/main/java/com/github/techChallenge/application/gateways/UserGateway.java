@@ -124,6 +124,11 @@ public class UserGateway implements IUserGateway {
         return this.repository.existsByLoginAndIdNot(login, id);
     }
 
+    @Override
+    public boolean existById(Long id) {
+        return this.repository.existsById(id);
+    }
+
     public boolean emailExists(String email) {
         return this.repository.existsByEmail(email);
     }

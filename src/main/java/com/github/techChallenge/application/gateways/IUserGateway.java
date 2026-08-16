@@ -16,4 +16,5 @@ public interface IUserGateway {
     boolean emailExists(String email, Long id);
     boolean loginExists(String login);
     boolean loginExists(String login, Long id);
+    boolean existById(Long id);
 }

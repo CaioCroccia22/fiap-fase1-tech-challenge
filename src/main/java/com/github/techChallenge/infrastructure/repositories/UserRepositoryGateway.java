@@ -1,18 +1,16 @@
 package com.github.techChallenge.infrastructure.repositories;
 
+import com.github.techChallenge.application.exceptions.UserNotFoundException;
 import com.github.techChallenge.application.repositories.IUserRepository;
 import com.github.techChallenge.domain.user.IUserMapper;
 import com.github.techChallenge.domain.user.User;
-import com.github.techChallenge.domain.user.dto.UserUpdateInputDTO;
 import com.github.techChallenge.infrastructure.entities.user.AddressEntity;
 import com.github.techChallenge.infrastructure.entities.user.UserEntity;
-import com.github.techChallenge.infrastructure.security.ISecurityConfig;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
@@ -35,7 +33,7 @@ public class UserRepositoryGateway implements IUserRepository {
     public User update(User user, Long id) {
 
         Optional<UserEntity> entity = this.repository.findById(id);
-        if (!entity.isPresent()) throw new EntityNotFoundException("Usuário não encontrado");
+        if (!entity.isPresent()) throw new UserNotFoundException("Usuário não encontrado");
         AddressEntity addressEntity = new AddressEntity(user.getAddress());
 
         UserEntity userEntity = entity.get();
@@ -61,7 +59,7 @@ public class UserRepositoryGateway implements IUserRepository {
     @Override
     public User findByID(Long id) {
         Optional<UserEntity> entity = this.repository.findById(id);
-        if (!entity.isPresent()) throw new EntityNotFoundException("Usuário não encontrado");
+        if (!entity.isPresent()) throw new UserNotFoundException("Usuário não encontrado");
 
         return this.mapper.fromEntityToDomain(entity.get());
     }
@@ -77,7 +75,7 @@ public class UserRepositoryGateway implements IUserRepository {
     @Override
     public void delete(Long id) {
         Optional<UserEntity> entity = this.repository.findById(id);
-        if (!entity.isPresent()) throw new EntityNotFoundException("Usuário não encontrado");
+        if (!entity.isPresent()) throw new UserNotFoundException("Usuário não encontrado");
 
         this.repository.delete(entity.get());
     }
@@ -104,5 +102,10 @@ public class UserRepositoryGateway implements IUserRepository {
     @Override
     public boolean existsByLoginAndIdNot(String login, Long id) {
         return this.repository.existsByLoginAndIdNot(login, id);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return this.repository.existsById(id);
     }
 }
