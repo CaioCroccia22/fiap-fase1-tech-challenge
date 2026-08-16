@@ -49,9 +49,10 @@ public record UserUpdateInputDTO(
 
         @Schema(
                 description = "Nível de acesso do usuário",
-                requiredMode = Schema.RequiredMode.REQUIRED
+                requiredMode = Schema.RequiredMode.REQUIRED,
+                allowableValues = {"OWNER", "CUSTOMER"}
         )
-        @NotNull(message = "O tipo do usuário é obrigatório.")
+        @NotNull(message = "O tipo do usuário é obrigatório. Valores aceitos: OWNER, CUSTOMER.")
         UserLevel level,
 
         @Schema(

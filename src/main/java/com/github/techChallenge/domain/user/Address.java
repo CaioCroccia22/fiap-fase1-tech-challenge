@@ -22,6 +22,7 @@ public record Address (
     @NotBlank(message = "O bairro é obrigatório")
     String neighborhood,
     @Schema(description = "Cidade", example = "São Paulo", format= "string", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotBlank(message = "A cidade é obrigatória")
     String city,
     @Schema(description = "UF, com 2 caracteres", example = "SP", format= "string", requiredMode = Schema.RequiredMode.REQUIRED, maxLength = 2)
     @NotBlank(message = "O UF é obrigatório")

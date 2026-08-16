@@ -60,8 +60,8 @@ public record UserCreateInputDTO(
         )
         String password,
 
-        @Schema(description = "Tipo do usuário")
-        @NotNull(message = "O tipo do usuário é obrigatório.")
+        @Schema(description = "Tipo do usuário", allowableValues = {"OWNER", "CUSTOMER"})
+        @NotNull(message = "O tipo do usuário é obrigatório. Valores aceitos: OWNER, CUSTOMER.")
         UserLevel level,
 
         @Schema(description = "Endereço do usuário")
