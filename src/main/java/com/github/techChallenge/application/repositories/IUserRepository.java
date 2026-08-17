@@ -24,7 +24,7 @@ public interface IUserRepository {
     boolean existsByLogin(String login);
     void delete(Long id);
     String getEncryptPasswordByLogin(String login);
-
+    boolean updatePasswordByLogin(String encryptPasword, String login);
     boolean existsByEmailAndIdNot(String email, Long id);
     boolean existsByLoginAndIdNot(String login, Long id);
     boolean existsById(Long id);

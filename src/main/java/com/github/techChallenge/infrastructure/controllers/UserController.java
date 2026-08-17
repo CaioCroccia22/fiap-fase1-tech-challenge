@@ -13,6 +13,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import jakarta.validation.Valid;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/v1/user", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -24,12 +26,13 @@ public class UserController implements IUserController {
     private final ListUserUseCase   listUserUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
     private final UserValidator     userValidator;
+    private final ChangePasswordUser changePasswordUser;
 
     public UserController(CreateUserUseCase createUserUseCase,
                           UpdateUserUseCase updateUserUseCase,
                           FindUserUseCase findUserUseCase,
                           ListUserUseCase listUserUseCase,
-                          DeleteUserUseCase deleteUserUseCase, UserValidator userValidator
+                          DeleteUserUseCase deleteUserUseCase, UserValidator userValidator, ChangePasswordUser changePasswordUser
     ) {
         this.createUserUseCase = createUserUseCase;
         this.updateUserUseCase = updateUserUseCase;
@@ -37,6 +40,7 @@ public class UserController implements IUserController {
         this.listUserUseCase = listUserUseCase;
         this.deleteUserUseCase = deleteUserUseCase;
         this.userValidator = userValidator;
+        this.changePasswordUser = changePasswordUser;
     }
 
     @PostMapping("/")
@@ -101,21 +105,29 @@ public class UserController implements IUserController {
 
     @Override
     @PatchMapping("/change-password/{id}")
-    public ResponseEntity<Void> changePassword(
+    public ResponseEntity<Map<String, Object>> changePassword(
             @PathVariable("id") Long id,
-            @Valid @RequestBody UserChangePasswordInputDTO inputDTO) {
-        return null;
+            @Valid @RequestBody UserChangePasswordInputDTO dto) {
+        boolean sucess = this.changePasswordUser.ChangePassword(dto);
+        if(!sucess){ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT);};
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("message", "System operational");
+
+        return ResponseEntity.ok(response);
     }
 
     @Override
     @PostMapping("/auth-login")
-    public ResponseEntity<Boolean> authUser(
+    public ResponseEntity<Map<String, Object>> authUser(
             @Valid @RequestBody UserAuthInputDTO dto) {
-       boolean result = this.userValidator.authUser(dto);
-        if (result) {
-            return ResponseEntity.ok(true);
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+       boolean sucess = this.userValidator.authUser(dto);
+        if(!sucess){ResponseEntity.status(HttpStatus.UNAUTHORIZED);};
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("message", "Usuário autenticado");
+
+        return ResponseEntity.ok(response);
     }
 
 }
