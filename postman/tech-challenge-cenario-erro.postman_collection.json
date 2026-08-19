@@ -2,7 +2,6 @@
   "info": {
     "_postman_id": "46995384-2b43-4275-97fa-244e57cf7623",
     "name": "FIAP Fase 1 - Tech Challenge - Cenários de Erro",
-    "description": "Collection manual para testar cenários de erro da API.\n\nEsta versão NÃO possui scripts Before request nem After response.\nNenhum status, código ou formato de resposta é validado automaticamente pelo Postman.\nA análise dos retornos deve ser feita manualmente pelo usuário.\n\nImportante: como os scripts também eram usados para gerar dados dinâmicos e salvar IDs, os valores de teste precisam ser ajustados manualmente quando necessário.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "57082131"
   },

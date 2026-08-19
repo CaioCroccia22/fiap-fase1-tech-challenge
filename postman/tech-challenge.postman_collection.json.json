@@ -2,7 +2,6 @@
   "info": {
     "_postman_id": "ea4869bf-699e-4d11-aac8-eb10716027ec",
     "name": "FIAP Fase 1 - Tech Challenge",
-    "description": "Collection montada a partir dos endpoints existentes no UserController da branch master do repositório. A variável userId é preenchida automaticamente após a criação de um usuário.\n\nObservações da versão atual do código:\n\n- O endpoint de alteração de senha está declarado, mas retorna null.\n    \n- O endpoint de atualização não anota o id com @PathVariable.\n    \n- Ainda não existe endpoint de validação de login.\n    \n- O cadastro atual não recebe e-mail nem senha.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "57082131"
   },
