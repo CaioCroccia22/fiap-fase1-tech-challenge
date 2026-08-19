@@ -11,6 +11,58 @@
       "name": "Usuários",
       "item": [
         {
+          "name": "00 - Login usuário",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status de criação\", function () {\n    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\n});\n\nif (pm.response.code === 200 || pm.response.code === 201) {\n    const json = pm.response.json();\n    if (json.id !== undefined && json.id !== null) {\n        pm.collectionVariables.set(\"userId\", String(json.id));\n    }\n}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"José da Silva\",\n  \"email\": \"jose.silva.2026@email.com\",\n  \"login\": \"jose.silva.2026\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar, sala 300\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/user/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Cria um usuário. Na implementação atual, o DTO recebe apenas name, login, level e address. O teste salva o id retornado em {{userId}}."
+          },
+          "response": []
+        },
+        {
           "name": "01 - Cadastrar usuário",
           "event": [
             {
