@@ -1,0 +1,2385 @@
+{
+  "info": {
+    "_postman_id": "46995384-2b43-4275-97fa-244e57cf7623",
+    "name": "FIAP Fase 1 - Tech Challenge - Cenários de Erro",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57082131"
+  },
+  "item": [
+    {
+      "name": "00 - Preparação",
+      "item": [
+        {
+          "name": "00.01 - Criar usuário A",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA Erros A\",\n  \"email\": \"{{errorEmailA}}\",\n  \"login\": \"{{errorLoginA}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Gera um runId novo e cria o usuário A usado nos testes de duplicidade e autenticação."
+          },
+          "response": []
+        },
+        {
+          "name": "00.02 - Criar usuário B",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA Erros B\",\n  \"email\": \"{{errorEmailB}}\",\n  \"login\": \"{{errorLoginB}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"CUSTOMER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Cria o usuário B, usado principalmente nos conflitos de atualização."
+          },
+          "response": []
+        }
+      ],
+      "description": "Execute esta pasta antes dos erros, ou rode a collection inteira. Ela cria dois usuários com e-mail/login únicos e salva os IDs nas variáveis da collection."
+    },
+    {
+      "name": "01 - 400 - Validação no cadastro",
+      "item": [
+        {
+          "name": "01.01 - Nome vazio",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\",\n  \"email\": \"qa.validacao.1.{{errorRunId}}@email.com\",\n  \"login\": \"qaval1.{{errorRunId}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo name."
+          },
+          "response": []
+        },
+        {
+          "name": "01.02 - Nome acima de 50 caracteres",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\",\n  \"email\": \"qa.validacao.2.{{errorRunId}}@email.com\",\n  \"login\": \"qaval2.{{errorRunId}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo name."
+          },
+          "response": []
+        },
+        {
+          "name": "01.03 - E-mail vazio",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"\",\n  \"login\": \"qaval3.{{errorRunId}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo email."
+          },
+          "response": []
+        },
+        {
+          "name": "01.04 - E-mail com formato inválido",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"email-invalido\",\n  \"login\": \"qaval4.{{errorRunId}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo email."
+          },
+          "response": []
+        },
+        {
+          "name": "01.05 - E-mail acima de 255 caracteres",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@x.com\",\n  \"login\": \"qaval5.{{errorRunId}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo email."
+          },
+          "response": []
+        },
+        {
+          "name": "01.06 - Login vazio",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"qa.validacao.6.{{errorRunId}}@email.com\",\n  \"login\": \"\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo login."
+          },
+          "response": []
+        },
+        {
+          "name": "01.07 - Login abaixo de 4 caracteres",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"qa.validacao.7.{{errorRunId}}@email.com\",\n  \"login\": \"abc\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo login."
+          },
+          "response": []
+        },
+        {
+          "name": "01.08 - Login acima de 100 caracteres",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"qa.validacao.8.{{errorRunId}}@email.com\",\n  \"login\": \"lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo login."
+          },
+          "response": []
+        },
+        {
+          "name": "01.09 - Senha vazia",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"qa.validacao.9.{{errorRunId}}@email.com\",\n  \"login\": \"qaval9.{{errorRunId}}\",\n  \"password\": \"\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo password."
+          },
+          "response": []
+        },
+        {
+          "name": "01.10 - Senha abaixo de 8 caracteres",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"qa.validacao.10.{{errorRunId}}@email.com\",\n  \"login\": \"qaval10.{{errorRunId}}\",\n  \"password\": \"1234567\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo password."
+          },
+          "response": []
+        },
+        {
+          "name": "01.11 - Senha acima de 100 caracteres",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"qa.validacao.11.{{errorRunId}}@email.com\",\n  \"login\": \"qaval11.{{errorRunId}}\",\n  \"password\": \"SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo password."
+          },
+          "response": []
+        },
+        {
+          "name": "01.12 - Tipo de usuário ausente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"qa.validacao.12.{{errorRunId}}@email.com\",\n  \"login\": \"qaval12.{{errorRunId}}\",\n  \"password\": \"Senha@123\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo level."
+          },
+          "response": []
+        },
+        {
+          "name": "01.13 - Endereço ausente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"qa.validacao.13.{{errorRunId}}@email.com\",\n  \"login\": \"qaval13.{{errorRunId}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo address."
+          },
+          "response": []
+        },
+        {
+          "name": "01.14 - Logradouro vazio",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"qa.validacao.14.{{errorRunId}}@email.com\",\n  \"login\": \"qaval14.{{errorRunId}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo address."
+          },
+          "response": []
+        },
+        {
+          "name": "01.15 - Número vazio",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"qa.validacao.15.{{errorRunId}}@email.com\",\n  \"login\": \"qaval15.{{errorRunId}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo number."
+          },
+          "response": []
+        },
+        {
+          "name": "01.16 - CEP vazio",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"qa.validacao.16.{{errorRunId}}@email.com\",\n  \"login\": \"qaval16.{{errorRunId}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo zipCode."
+          },
+          "response": []
+        },
+        {
+          "name": "01.17 - CEP inválido",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"qa.validacao.17.{{errorRunId}}@email.com\",\n  \"login\": \"qaval17.{{errorRunId}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"123\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo zipCode."
+          },
+          "response": []
+        },
+        {
+          "name": "01.18 - Bairro vazio",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"qa.validacao.18.{{errorRunId}}@email.com\",\n  \"login\": \"qaval18.{{errorRunId}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo neighborhood."
+          },
+          "response": []
+        },
+        {
+          "name": "01.19 - Cidade vazia",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"qa.validacao.19.{{errorRunId}}@email.com\",\n  \"login\": \"qaval19.{{errorRunId}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo city."
+          },
+          "response": []
+        },
+        {
+          "name": "01.20 - UF vazia",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"qa.validacao.20.{{errorRunId}}@email.com\",\n  \"login\": \"qaval20.{{errorRunId}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo state."
+          },
+          "response": []
+        },
+        {
+          "name": "01.21 - UF em formato inválido",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"qa.validacao.21.{{errorRunId}}@email.com\",\n  \"login\": \"qaval21.{{errorRunId}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"São Paulo\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo state."
+          },
+          "response": []
+        },
+        {
+          "name": "01.22 - País vazio",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"qa.validacao.22.{{errorRunId}}@email.com\",\n  \"login\": \"qaval22.{{errorRunId}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Espera 400/VALIDATION_ERROR e uma violação associada ao campo country."
+          },
+          "response": []
+        },
+        {
+          "name": "01.23 - Vários campos inválidos ao mesmo tempo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\",\n  \"email\": \"invalido\",\n  \"login\": \"a\",\n  \"password\": \"123\",\n  \"level\": null,\n  \"address\": {\n    \"address\": \"\",\n    \"number\": \"\",\n    \"complement\": \"\",\n    \"zipCode\": \"1\",\n    \"neighborhood\": \"\",\n    \"city\": \"\",\n    \"state\": \"sp\",\n    \"country\": \"\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Valida que a API agrega várias violações no mesmo ProblemDetail."
+          },
+          "response": []
+        }
+      ],
+      "description": "Cobre as constraints do UserCreateInputDTO e do Address: obrigatoriedade, tamanhos, formato de e-mail, CEP e UF."
+    },
+    {
+      "name": "02 - 400 - Corpo da requisição inválido",
+      "item": [
+        {
+          "name": "02.01 - Corpo vazio",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "POST sem JSON válido."
+          },
+          "response": []
+        },
+        {
+          "name": "02.02 - JSON malformado",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"Teste\", \"email\": ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "JSON propositalmente incompleto."
+          },
+          "response": []
+        },
+        {
+          "name": "02.03 - Enum level inexistente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"qa.body.{{errorRunId}}@email.com\",\n  \"login\": \"qabody.{{errorRunId}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"ADMIN\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "OWNER e CUSTOMER são válidos; ADMIN deve falhar na desserialização do enum."
+          },
+          "response": []
+        }
+      ],
+      "description": "Testes que devem cair no tratamento de HttpMessageNotReadableException."
+    },
+    {
+      "name": "03 - 400 - Validação na atualização",
+      "item": [
+        {
+          "name": "03.01 - Update com nome vazio",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\",\n  \"email\": \"{{errorEmailB}}\",\n  \"login\": \"{{errorLoginB}}\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/{{errorUserIdB}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "{{errorUserIdB}}"
+              ]
+            },
+            "description": "Valida o campo name no endpoint de atualização."
+          },
+          "response": []
+        },
+        {
+          "name": "03.02 - Update com nome acima de 50",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN\",\n  \"email\": \"{{errorEmailB}}\",\n  \"login\": \"{{errorLoginB}}\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/{{errorUserIdB}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "{{errorUserIdB}}"
+              ]
+            },
+            "description": "Valida o campo name no endpoint de atualização."
+          },
+          "response": []
+        },
+        {
+          "name": "03.03 - Update com e-mail vazio",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA Atualizado\",\n  \"email\": \"\",\n  \"login\": \"{{errorLoginB}}\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/{{errorUserIdB}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "{{errorUserIdB}}"
+              ]
+            },
+            "description": "Valida o campo email no endpoint de atualização."
+          },
+          "response": []
+        },
+        {
+          "name": "03.04 - Update com e-mail inválido",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA Atualizado\",\n  \"email\": \"invalido\",\n  \"login\": \"{{errorLoginB}}\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/{{errorUserIdB}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "{{errorUserIdB}}"
+              ]
+            },
+            "description": "Valida o campo email no endpoint de atualização."
+          },
+          "response": []
+        },
+        {
+          "name": "03.05 - Update com login vazio",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA Atualizado\",\n  \"email\": \"{{errorEmailB}}\",\n  \"login\": \"\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/{{errorUserIdB}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "{{errorUserIdB}}"
+              ]
+            },
+            "description": "Valida o campo login no endpoint de atualização."
+          },
+          "response": []
+        },
+        {
+          "name": "03.06 - Update com login curto",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA Atualizado\",\n  \"email\": \"{{errorEmailB}}\",\n  \"login\": \"abc\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/{{errorUserIdB}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "{{errorUserIdB}}"
+              ]
+            },
+            "description": "Valida o campo login no endpoint de atualização."
+          },
+          "response": []
+        },
+        {
+          "name": "03.07 - Update sem level",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA Atualizado\",\n  \"email\": \"{{errorEmailB}}\",\n  \"login\": \"{{errorLoginB}}\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/{{errorUserIdB}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "{{errorUserIdB}}"
+              ]
+            },
+            "description": "Valida o campo level no endpoint de atualização."
+          },
+          "response": []
+        },
+        {
+          "name": "03.08 - Update sem address",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA Atualizado\",\n  \"email\": \"{{errorEmailB}}\",\n  \"login\": \"{{errorLoginB}}\",\n  \"level\": \"OWNER\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/{{errorUserIdB}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "{{errorUserIdB}}"
+              ]
+            },
+            "description": "Valida o campo address no endpoint de atualização."
+          },
+          "response": []
+        },
+        {
+          "name": "03.09 - Update com CEP inválido",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA Atualizado\",\n  \"email\": \"{{errorEmailB}}\",\n  \"login\": \"{{errorLoginB}}\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"123\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/{{errorUserIdB}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "{{errorUserIdB}}"
+              ]
+            },
+            "description": "Valida o campo zipCode no endpoint de atualização."
+          },
+          "response": []
+        },
+        {
+          "name": "03.10 - Update com UF inválida",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA Atualizado\",\n  \"email\": \"{{errorEmailB}}\",\n  \"login\": \"{{errorLoginB}}\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"sp\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/{{errorUserIdB}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "{{errorUserIdB}}"
+              ]
+            },
+            "description": "Valida o campo state no endpoint de atualização."
+          },
+          "response": []
+        }
+      ],
+      "description": "Confirma que o @Valid também funciona no PUT /api/v1/user/{id}."
+    },
+    {
+      "name": "04 - 404 - Usuário não encontrado",
+      "item": [
+        {
+          "name": "04.01 - Buscar ID inexistente",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/{{missingUserId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "{{missingUserId}}"
+              ]
+            },
+            "description": "Espera UserNotFoundException."
+          },
+          "response": []
+        },
+        {
+          "name": "04.02 - Atualizar ID inexistente",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA Atualizado\",\n  \"email\": \"qa.notfound.{{errorRunId}}@email.com\",\n  \"login\": \"qanotfound.{{errorRunId}}\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/{{missingUserId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "{{missingUserId}}"
+              ]
+            },
+            "description": "O ID deve ser verificado antes da atualização."
+          },
+          "response": []
+        },
+        {
+          "name": "04.03 - Excluir ID inexistente",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/{{missingUserId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "{{missingUserId}}"
+              ]
+            },
+            "description": "DELETE de usuário que não existe."
+          },
+          "response": []
+        }
+      ],
+      "description": "Busca, atualização e exclusão de um ID que não existe."
+    },
+    {
+      "name": "05 - 409 - Conflitos de unicidade",
+      "item": [
+        {
+          "name": "05.01 - Cadastro com e-mail duplicado",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"{{errorEmailA}}\",\n  \"login\": \"qa.dup.email.{{errorRunId}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Mesmo e-mail do usuário A, mas login diferente."
+          },
+          "response": []
+        },
+        {
+          "name": "05.02 - Cadastro com login duplicado",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"qa.dup.login.{{errorRunId}}@email.com\",\n  \"login\": \"{{errorLoginA}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Mesmo login do usuário A, mas e-mail diferente."
+          },
+          "response": []
+        },
+        {
+          "name": "05.03 - Cadastro com e-mail duplicado mudando maiúsculas/minúsculas",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"{{errorEmailAUpper}}\",\n  \"login\": \"qa.dup.email.case.{{errorRunId}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Confirma a normalização/case-insensitive do e-mail."
+          },
+          "response": []
+        },
+        {
+          "name": "05.04 - Cadastro com login duplicado mudando maiúsculas/minúsculas",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA\",\n  \"email\": \"qa.dup.login.case.{{errorRunId}}@email.com\",\n  \"login\": \"{{errorLoginAUpper}}\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                ""
+              ]
+            },
+            "description": "Confirma a normalização/case-insensitive do login."
+          },
+          "response": []
+        },
+        {
+          "name": "05.05 - Update B usando e-mail do usuário A",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA Atualizado\",\n  \"email\": \"{{errorEmailA}}\",\n  \"login\": \"{{errorLoginB}}\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/{{errorUserIdB}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "{{errorUserIdB}}"
+              ]
+            },
+            "description": "Deve impedir que dois usuários terminem com o mesmo e-mail."
+          },
+          "response": []
+        },
+        {
+          "name": "05.06 - Update B usando login do usuário A",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Usuário QA Atualizado\",\n  \"email\": \"{{errorEmailB}}\",\n  \"login\": \"{{errorLoginA}}\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/{{errorUserIdB}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "{{errorUserIdB}}"
+              ]
+            },
+            "description": "Deve impedir que dois usuários terminem com o mesmo login."
+          },
+          "response": []
+        }
+      ],
+      "description": "Cobre e-mail/login duplicados no cadastro e no update. No cadastro, a camada shared usa USER_EMAIL_ALREADY_EXISTS / USER_LOGIN_ALREADY_EXISTS; no update, as exceptions atuais usam duplicate-email / duplicate-login."
+    },
+    {
+      "name": "06 - Autenticação - 400 e 401",
+      "item": [
+        {
+          "name": "06.01 - Login vazio",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"\",\n  \"password\": \"Senha@123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/auth-login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "auth-login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "06.02 - Login com menos de 4 caracteres",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"abc\",\n  \"password\": \"Senha@123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/auth-login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "auth-login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "06.03 - Senha vazia",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"{{errorLoginA}}\",\n  \"password\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/auth-login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "auth-login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "06.04 - Senha com menos de 8 caracteres",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"{{errorLoginA}}\",\n  \"password\": \"1234567\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/auth-login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "auth-login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "06.05 - Login inexistente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"nao.existe.{{errorRunId}}\",\n  \"password\": \"Senha@123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/auth-login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "auth-login"
+              ]
+            },
+            "description": "Login inexistente deve resultar em não autorizado."
+          },
+          "response": []
+        },
+        {
+          "name": "06.06 - Senha incorreta",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"{{errorLoginA}}\",\n  \"password\": \"SenhaErrada@999\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/auth-login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "auth-login"
+              ]
+            },
+            "description": "Login existe, mas a senha não confere."
+          },
+          "response": []
+        },
+        {
+          "name": "06.07 - Auth com JSON malformado",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"login\": \"abc\", \"password\": ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/auth-login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "auth-login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Valida o DTO de autenticação e cenários de credencial inexistente/incorreta. A implementação atual usa o código USER_UNATHORIZED (grafia preservada do projeto)."
+    },
+    {
+      "name": "07 - Alteração de senha - erros",
+      "item": [
+        {
+          "name": "07.01 - Alterar senha de login inexistente",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"nao.existe.{{errorRunId}}\",\n  \"password\": \"NovaSenha@123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/change-password/{{missingUserId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "change-password",
+                "{{missingUserId}}"
+              ]
+            },
+            "description": "Usa login inexistente para garantir que nenhuma senha real seja alterada. O path id está presente, mas a implementação atual resolve a operação pelo login do body."
+          },
+          "response": []
+        }
+      ],
+      "description": "Cenários seguros, que não alteram a senha dos usuários de preparação. O DTO atual de alteração de senha não possui Bean Validation para login/password; os casos que deveriam ser 400 ficam na pasta de robustez."
+    },
+    {
+      "name": "99 - Limpeza",
+      "item": [
+        {
+          "name": "99.01 - Excluir usuário B",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/{{errorUserIdB}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "{{errorUserIdB}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "99.02 - Excluir usuário A",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/user/{{errorUserIdA}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "user",
+                "{{errorUserIdA}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "Apaga os dois usuários criados na preparação."
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "missingUserId",
+      "value": "999999999"
+    },
+    {
+      "key": "errorRunId",
+      "value": "001"
+    },
+    {
+      "key": "errorEmailA",
+      "value": "qa.erros.a.001@email.com"
+    },
+    {
+      "key": "errorLoginA",
+      "value": "qa.erros.a.001"
+    },
+    {
+      "key": "errorEmailB",
+      "value": "qa.erros.b.001@email.com"
+    },
+    {
+      "key": "errorLoginB",
+      "value": "qa.erros.b.001"
+    },
+    {
+      "key": "errorUserIdA",
+      "value": "1"
+    },
+    {
+      "key": "errorUserIdB",
+      "value": "2"
+    },
+    {
+      "key": "errorEmailAUpper",
+      "value": "QA.ERROS.A.001@EMAIL.COM"
+    },
+    {
+      "key": "errorLoginAUpper",
+      "value": "QA.ERROS.A.001"
+    }
+  ]
+}
