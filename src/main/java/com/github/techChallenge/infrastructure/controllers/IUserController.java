@@ -2,6 +2,7 @@ package com.github.techChallenge.infrastructure.controllers;
 
 import com.github.techChallenge.domain.user.dto.*;
 import com.github.techChallenge.shared.ApiErrorResponse;
+import com.github.techChallenge.shared.ResponseError;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;

@@ -26,13 +26,13 @@ public class UserController implements IUserController {
     private final ListUserUseCase   listUserUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
     private final UserValidator     userValidator;
-    private final ChangePasswordUser changePasswordUser;
+    private final ChangePasswordUseCase changePasswordUser;
 
     public UserController(CreateUserUseCase createUserUseCase,
                           UpdateUserUseCase updateUserUseCase,
                           FindUserUseCase findUserUseCase,
                           ListUserUseCase listUserUseCase,
-                          DeleteUserUseCase deleteUserUseCase, UserValidator userValidator, ChangePasswordUser changePasswordUser
+                          DeleteUserUseCase deleteUserUseCase, UserValidator userValidator, ChangePasswordUseCase changePasswordUser
     ) {
         this.createUserUseCase = createUserUseCase;
         this.updateUserUseCase = updateUserUseCase;

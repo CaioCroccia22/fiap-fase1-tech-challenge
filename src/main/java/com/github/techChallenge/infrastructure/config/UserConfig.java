@@ -7,7 +7,6 @@ import com.github.techChallenge.domain.user.IUserMapper;
 import com.github.techChallenge.infrastructure.mappers.UserMapper;
 import com.github.techChallenge.infrastructure.repositories.UserRepositoryGateway;
 import com.github.techChallenge.infrastructure.security.ISecurityConfig;
-import com.github.techChallenge.infrastructure.security.SecurityConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -55,6 +54,6 @@ public class UserConfig {
     }
 
     @Bean
-    ChangePasswordUser changePasswordUser(UserGateway gateway, IUserMapper mapper){return new ChangePasswordUser(gateway, mapper);};
+    ChangePasswordUseCase changePasswordUser(UserGateway gateway, IUserMapper mapper){return new ChangePasswordUseCase(gateway, mapper);};
 
 }
