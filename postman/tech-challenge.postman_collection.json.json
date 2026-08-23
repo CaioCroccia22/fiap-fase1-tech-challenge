@@ -36,7 +36,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"José da Silva\",\n  \"email\": \"jose.silva.2026@email.com\",\n  \"login\": \"jose.silva.2026\",\n  \"password\": \"Senha@123\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Avenida Paulista\",\n    \"number\": \"1000\",\n    \"complement\": \"3º andar, sala 300\",\n    \"zipCode\": \"01310-100\",\n    \"neighborhood\": \"Bela Vista\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "raw": "{\n  \"login\": \"jose.silva.202\",\n  \"password\": \"Senha@123\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -44,7 +44,7 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/api/v1/user/",
+              "raw": "http://localhost:8080/api/v1/user/auth-login",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -54,7 +54,7 @@
                 "api",
                 "v1",
                 "user",
-                ""
+                "auth-login"
               ]
             },
             "description": "Cria um usuário. Na implementação atual, o DTO recebe apenas name, login, level e address. O teste salva o id retornado em {{userId}}."
@@ -297,14 +297,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(\"Resposta de sucesso\", function () {",
-                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  ""
+                ]
               }
             }
           ],
@@ -313,18 +309,16 @@
             "header": [
               {
                 "key": "Accept",
-                "value": "application/json",
-                "type": "text"
+                "value": "application/json"
               },
               {
                 "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
+                "value": "application/json"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"id\": \"{{userId}}\",\n  \"name\": \"José\",\n  \"login\": \"jose.sil\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Rua da Consolação\",\n    \"number\": \"500\",\n    \"complement\": \"Apartamento 42\",\n    \"zipCode\": \"01302-000\",\n    \"neighborhood\": \"Consolação\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
+              "raw": "{\n  \"id\": \"{{userId}}\",\n  \"name\": \"José\",\n  \"email\": \"jose.silva.2026@email.com\",\n  \"login\": \"jose.silva.202\",\n  \"level\": \"OWNER\",\n  \"address\": {\n    \"address\": \"Rua da Consolação\",\n    \"number\": \"500\",\n    \"complement\": \"Apartamento 42\",\n    \"zipCode\": \"01302-000\",\n    \"neighborhood\": \"Consolação\",\n    \"city\": \"São Paulo\",\n    \"state\": \"SP\",\n    \"country\": \"Brasil\"\n  }\n}",
               "options": {
                 "raw": {
                   "language": "json"
