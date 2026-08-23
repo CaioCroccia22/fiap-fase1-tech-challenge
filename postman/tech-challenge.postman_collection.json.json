@@ -17,7 +17,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status de criação\", function () {\n    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\n});\n\nif (pm.response.code === 200 || pm.response.code === 201) {\n    const json = pm.response.json();\n    if (json.id !== undefined && json.id !== null) {\n        pm.collectionVariables.set(\"userId\", String(json.id));\n    }\n}"
+                  ""
                 ]
               }
             }
@@ -67,21 +67,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(\"Status de criação\", function () {",
-                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
-                  "});",
-                  "",
-                  "if (pm.response.code === 200 || pm.response.code === 201) {",
-                  "    const json = pm.response.json();",
-                  "    if (json.id !== undefined && json.id !== null) {",
-                  "        pm.collectionVariables.set(\"userId\", String(json.id));",
-                  "    }",
-                  "}"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  ""
+                ]
               }
             }
           ],
@@ -90,13 +79,11 @@
             "header": [
               {
                 "key": "Accept",
-                "value": "application/json",
-                "type": "text"
+                "value": "application/json"
               },
               {
                 "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
+                "value": "application/json"
               }
             ],
             "body": {
@@ -132,17 +119,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(\"Status 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});",
-                  "pm.test(\"Resposta em JSON\", function () {",
-                  "    pm.response.to.be.json;",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  ""
+                ]
               }
             }
           ],
@@ -151,8 +131,7 @@
             "header": [
               {
                 "key": "Accept",
-                "value": "application/json",
-                "type": "text"
+                "value": "application/json"
               }
             ],
             "url": {
@@ -189,17 +168,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(\"Status 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});",
-                  "pm.test(\"Resposta em JSON\", function () {",
-                  "    pm.response.to.be.json;",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  ""
+                ]
               }
             }
           ],
@@ -208,8 +180,7 @@
             "header": [
               {
                 "key": "Accept",
-                "value": "application/json",
-                "type": "text"
+                "value": "application/json"
               }
             ],
             "url": {
@@ -236,17 +207,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(\"Status 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});",
-                  "pm.test(\"Resposta em JSON\", function () {",
-                  "    pm.response.to.be.json;",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  ""
+                ]
               }
             }
           ],
@@ -255,8 +219,7 @@
             "header": [
               {
                 "key": "Accept",
-                "value": "application/json",
-                "type": "text"
+                "value": "application/json"
               }
             ],
             "url": {
@@ -393,14 +356,10 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test(\"Status 204\", function () {",
-                  "    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
-                  "});"
-                ],
                 "type": "text/javascript",
-                "packages": {},
-                "requests": {}
+                "exec": [
+                  ""
+                ]
               }
             }
           ],
@@ -409,8 +368,7 @@
             "header": [
               {
                 "key": "Accept",
-                "value": "application/json",
-                "type": "text"
+                "value": "application/json"
               }
             ],
             "url": {
