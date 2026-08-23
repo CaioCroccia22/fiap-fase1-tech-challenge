@@ -1,6 +1,7 @@
 /home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/TechChallengeApplication.java
 /home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/application/exceptions/BusinessException.java
 /home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/application/exceptions/DuplicateEmailException.java
+/home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/application/exceptions/DuplicateLoginException.java
 /home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/application/exceptions/GlobalExceptionHandler.java
 /home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/application/exceptions/InvalidCredentialsException.java
 /home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/application/exceptions/InvalidPasswordException.java
@@ -9,6 +10,7 @@
 /home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/application/gateways/IUserGateway.java
 /home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/application/gateways/UserGateway.java
 /home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/application/repositories/IUserRepository.java
+/home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/application/usecases/user/ChangePasswordUseCase.java
 /home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/application/usecases/user/CreateUserUseCase.java
 /home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/application/usecases/user/DeleteUserUseCase.java
 /home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/application/usecases/user/FindUserUseCase.java
@@ -37,6 +39,7 @@
 /home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/infrastructure/repositories/UserRepositoryGateway.java
 /home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/infrastructure/security/ISecurityConfig.java
 /home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/infrastructure/security/SecurityConfig.java
+/home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/shared/ApiErrorResponse.java
 /home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/shared/ApplicationException.java
 /home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/shared/ConflictException.java
 /home/grwoelke/workspace/fiap/fase-1-tech-challenge/src/main/java/com/github/techChallenge/shared/EmailAlreadyExistsException.java

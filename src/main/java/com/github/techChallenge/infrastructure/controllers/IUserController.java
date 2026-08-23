@@ -1,6 +1,7 @@
 package com.github.techChallenge.infrastructure.controllers;
 
 import com.github.techChallenge.domain.user.dto.*;
+import com.github.techChallenge.shared.ApiErrorResponse;
 import com.github.techChallenge.shared.ResponseError;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -13,6 +14,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+
+import java.util.Map;
 
 @Tag(
     name="Usuários",
@@ -29,7 +32,7 @@ public interface IUserController {
             content = @Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
                 schema = @Schema(
-                    implementation = UserCreateOutputDTO.class
+                    implementation = UserOutputDTO.class
                 )
             )
         ),
@@ -38,7 +41,7 @@ public interface IUserController {
             description = "Ocorreu um erro com os dados do usuário, durante a tentativa de criação",
             content = @Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                schema = @Schema(implementation = ResponseError.class)
+                schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
         @ApiResponse(
@@ -46,7 +49,15 @@ public interface IUserController {
             description = "Você não tem permissão para realizar esta ação",
             content = @Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                schema = @Schema(implementation = ResponseError.class)
+                schema = @Schema(implementation = ApiErrorResponse.class)
+            )
+        ),
+        @ApiResponse(
+            responseCode = "409",
+            description = "Já existe um usuário cadastrado com o e-mail ou o login informado",
+            content = @Content(
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
+                schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
         @ApiResponse(
@@ -54,7 +65,7 @@ public interface IUserController {
             description = "Ocorreu um erro do lado do servidor",
             content = @Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                schema = @Schema(implementation = ResponseError.class)
+                schema = @Schema(implementation = ApiErrorResponse.class)
             )
         )
     })
@@ -72,7 +83,7 @@ public interface IUserController {
             description = "O usuário foi modificado com sucesso",
             content = @Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                schema = @Schema(implementation = UserUpdateOutputDTO.class)
+                schema = @Schema(implementation = UserOutputDTO.class)
             )
         ),
         @ApiResponse(
@@ -80,7 +91,7 @@ public interface IUserController {
             description = "Ocorreu um erro com os dados do usuário, durante a tentativa de atualização",
             content = @Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                schema = @Schema(implementation = ResponseError.class)
+                schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
         @ApiResponse(
@@ -88,7 +99,7 @@ public interface IUserController {
             description = "Você não tem permissão para realizar esta ação",
             content = @Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                schema = @Schema(implementation = ResponseError.class)
+                schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
         @ApiResponse(
@@ -96,7 +107,15 @@ public interface IUserController {
             description = "O usuário que se deseja atualizar não foi encontrado",
             content = @Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                schema = @Schema(implementation = ResponseError.class)
+                schema = @Schema(implementation = ApiErrorResponse.class)
+            )
+        ),
+        @ApiResponse(
+            responseCode = "409",
+            description = "O e-mail ou o login informado já pertence a outro usuário",
+            content = @Content(
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
+                schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
         @ApiResponse(
@@ -104,7 +123,7 @@ public interface IUserController {
             description = "Ocorreu um erro do lado do servidor",
             content = @Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                schema = @Schema(implementation = ResponseError.class)
+                schema = @Schema(implementation = ApiErrorResponse.class)
             )
         )
     })
@@ -131,7 +150,7 @@ public interface IUserController {
                 description = "Ocorreu um erro com os dados do usuário, durante a tentativa de atualização",
                 content = @Content(
                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = ResponseError.class)
+                    schema = @Schema(implementation = ApiErrorResponse.class)
                 )
             ),
             @ApiResponse(
@@ -139,7 +158,7 @@ public interface IUserController {
                 description = "Você não tem permissão para realizar esta ação",
                 content = @Content(
                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = ResponseError.class)
+                    schema = @Schema(implementation = ApiErrorResponse.class)
                 )
             ),
             @ApiResponse(
@@ -147,7 +166,7 @@ public interface IUserController {
                 description = "Ocorreu um erro do lado do servidor",
                 content = @Content(
                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                    schema = @Schema(implementation = ResponseError.class)
+                    schema = @Schema(implementation = ApiErrorResponse.class)
                 )
             )
     })
@@ -176,7 +195,7 @@ public interface IUserController {
             description = "Você não tem permissão para realizar esta ação",
             content = @Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                schema = @Schema(implementation = ResponseError.class)
+                schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
         @ApiResponse(
@@ -184,7 +203,7 @@ public interface IUserController {
             description = "Usuário não encontrado",
             content = @Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                schema = @Schema(implementation = ResponseError.class)
+                schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
         @ApiResponse(
@@ -192,7 +211,7 @@ public interface IUserController {
             description = "Ocorreu um erro do lado do servidor",
             content = @Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                schema = @Schema(implementation = ResponseError.class)
+                schema = @Schema(implementation = ApiErrorResponse.class)
             )
         )
     })
@@ -218,7 +237,7 @@ public interface IUserController {
             description = "Você não tem permissão para realizar esta ação",
             content = @Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                schema = @Schema(implementation = ResponseError.class)
+                schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
         @ApiResponse(
@@ -226,7 +245,7 @@ public interface IUserController {
             description = "Ocorreu um erro do lado do servidor",
             content = @Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                schema = @Schema(implementation = ResponseError.class)
+                schema = @Schema(implementation = ApiErrorResponse.class)
             )
         )
     })
@@ -241,8 +260,8 @@ public interface IUserController {
     )
     @ApiResponses({
         @ApiResponse(
-            responseCode = "200",
-            description = "Remover um usuário pelo ID",
+            responseCode = "204",
+            description = "O usuário foi removido com sucesso. A resposta não possui corpo.",
             content = @Content
         ),
         @ApiResponse(
@@ -250,7 +269,15 @@ public interface IUserController {
             description = "Você não tem permissão para realizar esta ação",
             content = @Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                schema = @Schema(implementation = ResponseError.class)
+                schema = @Schema(implementation = ApiErrorResponse.class)
+            )
+        ),
+        @ApiResponse(
+            responseCode = "404",
+            description = "O usuário que se deseja remover não foi encontrado",
+            content = @Content(
+                mediaType = MediaType.APPLICATION_JSON_VALUE,
+                schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
         @ApiResponse(
@@ -258,7 +285,7 @@ public interface IUserController {
             description = "Ocorreu um erro do lado do servidor",
             content = @Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                schema = @Schema(implementation = ResponseError.class)
+                schema = @Schema(implementation = ApiErrorResponse.class)
             )
         )
     })
@@ -280,7 +307,7 @@ public interface IUserController {
             description = "Ocorreu um erro com os dados do usuário, durante a tentativa de atualização",
             content = @Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                schema = @Schema(implementation = ResponseError.class)
+                schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
         @ApiResponse(
@@ -288,15 +315,23 @@ public interface IUserController {
             description = "Você não tem permissão para realizar esta ação",
             content = @Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                schema = @Schema(implementation = ResponseError.class)
+                schema = @Schema(implementation = ApiErrorResponse.class)
             )
+        ),
+        @ApiResponse(
+                responseCode = "402",
+                description = "Conteudo da requisição não processável",
+                content = @Content(
+                        mediaType = MediaType.APPLICATION_JSON_VALUE,
+                        schema = @Schema(implementation = ResponseError.class)
+                )
         ),
         @ApiResponse(
             responseCode = "404",
             description = "O usuário que se deseja atualizar não foi encontrado",
             content = @Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                schema = @Schema(implementation = ResponseError.class)
+                schema = @Schema(implementation = ApiErrorResponse.class)
             )
         ),
         @ApiResponse(
@@ -304,11 +339,11 @@ public interface IUserController {
             description = "Ocorreu um erro do lado do servidor",
             content = @Content(
                 mediaType = MediaType.APPLICATION_JSON_VALUE,
-                schema = @Schema(implementation = ResponseError.class)
+                schema = @Schema(implementation = ApiErrorResponse.class)
             )
         )
     })
-    ResponseEntity<Void> changePassword(Long id, UserChangePasswordInputDTO inputDTO);
+    ResponseEntity<Map<String, Object>> changePassword(Long id, UserChangePasswordInputDTO inputDTO);
 
     @Operation(
             summary = "Autenticação em sistema"
@@ -317,17 +352,14 @@ public interface IUserController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Autenticação realizada com sucesso",
-                    content = @Content(
-                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = Boolean.class)
-                    )
+                    content = @Content
             ),
             @ApiResponse(
                     responseCode = "400",
                     description = "Dados de autenticação inválidos",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ResponseError.class)
+                            schema = @Schema(implementation = ApiErrorResponse.class)
                     )
             ),
             @ApiResponse(
@@ -335,7 +367,7 @@ public interface IUserController {
                     description = "Credenciais inválidas",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ResponseError.class)
+                            schema = @Schema(implementation = ApiErrorResponse.class)
                     )
             ),
             @ApiResponse(
@@ -343,11 +375,11 @@ public interface IUserController {
                     description = "Ocorreu um erro do lado do servidor",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = ResponseError.class)
+                            schema = @Schema(implementation = ApiErrorResponse.class)
                     )
             )
     })
-    ResponseEntity<Boolean> authUser(
+    ResponseEntity<Map<String, Object>> authUser(
             @Parameter(description = "Credenciais de login e senha")
             UserAuthInputDTO dto
     );

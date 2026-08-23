@@ -7,6 +7,7 @@ com/github/techChallenge/domain/user/dto/UserCreateOutputDTO.class
 com/github/techChallenge/domain/user/dto/UserUpdateInputDTO.class
 com/github/techChallenge/application/exceptions/InvalidPasswordException.class
 com/github/techChallenge/application/usecases/user/ListUserUseCase.class
+com/github/techChallenge/application/gateways/UserGateway$2.class
 com/github/techChallenge/application/exceptions/ProblemDetailFactory.class
 com/github/techChallenge/infrastructure/security/SecurityConfig.class
 com/github/techChallenge/application/gateways/UserGateway.class
@@ -26,7 +27,9 @@ com/github/techChallenge/application/usecases/user/DeleteUserUseCase.class
 com/github/techChallenge/domain/user/Address.class
 com/github/techChallenge/infrastructure/repositories/UserRepository.class
 com/github/techChallenge/application/exceptions/UserNotFoundException.class
+com/github/techChallenge/application/exceptions/DuplicateLoginException.class
 com/github/techChallenge/application/gateways/IUserGateway.class
+com/github/techChallenge/application/usecases/user/ChangePasswordUseCase.class
 com/github/techChallenge/domain/user/User.class
 com/github/techChallenge/shared/EmailAlreadyExistsException.class
 com/github/techChallenge/application/usecases/user/CreateUserUseCase.class
@@ -41,6 +44,7 @@ com/github/techChallenge/application/exceptions/DuplicateEmailException.class
 com/github/techChallenge/domain/user/dto/UserUpdateOutputDTO.class
 com/github/techChallenge/shared/UserNotFoundException.class
 com/github/techChallenge/application/exceptions/InvalidCredentialsException.class
+com/github/techChallenge/shared/ApiErrorResponse.class
 com/github/techChallenge/application/repositories/IUserRepository.class
 com/github/techChallenge/domain/user/dto/UserAuthInputDTO.class
 com/github/techChallenge/infrastructure/security/ISecurityConfig.class
