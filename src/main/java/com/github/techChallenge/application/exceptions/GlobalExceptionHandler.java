@@ -7,21 +7,23 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import tools.jackson.databind.exc.InvalidFormatException;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final Logger logger =
             LoggerFactory.getLogger(GlobalExceptionHandler.class);
@@ -146,10 +148,12 @@ public class GlobalExceptionHandler {
         );
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ProblemDetail> handleValidation(
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException exception,
-            HttpServletRequest request
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request
     ) {
         Map<String, String> violations = new LinkedHashMap<>();
 
@@ -168,7 +172,7 @@ public class GlobalExceptionHandler {
                 "Dados inválidos",
                 "Um ou mais campos da requisição são inválidos.",
                 "VALIDATION_ERROR",
-                request
+                ((ServletWebRequest) request).getRequest()
         );
 
         problemDetail.setProperty("violations", violations);
@@ -176,20 +180,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(problemDetail);
-    }
-
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ProblemDetail> handleUnreadableMessage(
-            HttpMessageNotReadableException exception,
-            HttpServletRequest request
-    ) {
-        return buildResponse(
-                HttpStatus.BAD_REQUEST,
-                "Requisição inválida",
-                "O corpo da requisição está ausente ou possui formato inválido.",
-                "INVALID_REQUEST_BODY",
-                request
-        );
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -209,6 +199,53 @@ public class GlobalExceptionHandler {
                 "DATA_INTEGRITY_CONFLICT",
                 request
         );
+    }
+
+
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(
+            Exception exception,
+            Object body,
+            HttpHeaders headers,
+            HttpStatusCode statusCode,
+            WebRequest request
+    ) {
+        HttpStatus status = HttpStatus.valueOf(statusCode.value());
+
+        String title;
+        String detail;
+
+        switch (status) {
+            case NOT_FOUND -> {
+                title = "Recurso não encontrado";
+                detail = "O endereço solicitado não existe nesta API.";
+            }
+            case METHOD_NOT_ALLOWED -> {
+                title = "Método não suportado";
+                detail = "Este endereço não aceita o método HTTP utilizado.";
+            }
+            case UNSUPPORTED_MEDIA_TYPE -> {
+                title = "Formato não suportado";
+                detail = "O tipo de conteúdo enviado não é aceito por este endereço.";
+            }
+            default -> {
+                title = "Requisição inválida";
+                detail = "A requisição possui parâmetros ou corpo inválidos.";
+            }
+        }
+
+        ProblemDetail problemDetail = problemDetailFactory.create(
+                status,
+                title,
+                detail,
+                status.name(),
+                ((ServletWebRequest) request).getRequest()
+        );
+
+        return ResponseEntity
+                .status(status)
+                .headers(headers)
+                .body(problemDetail);
     }
 
     @ExceptionHandler(Exception.class)
