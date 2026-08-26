@@ -2,12 +2,13 @@ package com.github.techChallenge.infrastructure.repositories;
 
 import com.github.techChallenge.application.exceptions.DuplicateLoginException;
 import com.github.techChallenge.application.exceptions.UserNotFoundException;
+import com.github.techChallenge.application.gateways.IUserGateway;
 import com.github.techChallenge.application.repositories.IUserRepository;
 import com.github.techChallenge.domain.user.IUserMapper;
 import com.github.techChallenge.domain.user.User;
 import com.github.techChallenge.infrastructure.entities.user.AddressEntity;
 import com.github.techChallenge.infrastructure.entities.user.UserEntity;
-import jakarta.persistence.EntityNotFoundException;
+import com.github.techChallenge.infrastructure.security.ISecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +20,8 @@ public class UserRepositoryGateway implements IUserRepository {
 
     @Autowired
     private UserRepository repository;
-
+    @Autowired
+    private ISecurityConfig securityConfig;
     @Autowired
     private IUserMapper mapper;
 

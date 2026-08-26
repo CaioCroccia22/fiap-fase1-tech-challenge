@@ -30,33 +30,7 @@ public class UserGateway implements IUserGateway {
     }
 
     @Override
-    public User create(UserCreateInputDTO dto) {
-
-        String normalizedEmail = dto.email()
-                .trim()
-                .toLowerCase(Locale.ROOT);
-
-        String normalizedLogin = dto.login()
-                .trim()
-                .toLowerCase(Locale.ROOT);
-
-        if (repository.existsByEmail(normalizedEmail)) {
-            throw new EmailAlreadyExistsException();
-        }
-
-        if (repository.existsByLogin(normalizedLogin)) {
-            throw new LoginAlreadyExistsException();
-        }
-
-        User user = User.create(
-                dto.name().trim(),
-                normalizedEmail,
-                normalizedLogin,
-                securityConfig.passwordEncoder(dto.password()),
-                dto.level(),
-                dto.address());
-
-
+    public User create(User user) {
         return repository.create(user);
     }
 

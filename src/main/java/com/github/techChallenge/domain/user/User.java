@@ -1,6 +1,7 @@
 package com.github.techChallenge.domain.user;
 
 import java.time.LocalDateTime;
+import java.util.Locale;
 
 public class User {
 
@@ -48,6 +49,13 @@ public class User {
             Address address
     ) {
         LocalDateTime now = LocalDateTime.now();
+        email = email
+                .trim()
+                .toLowerCase(Locale.ROOT);
+
+        login = login
+                .trim()
+                .toLowerCase(Locale.ROOT);
 
         return new User(
                 null,
@@ -69,6 +77,15 @@ public class User {
             UserLevel level,
             Address address
     ) {
+
+        email = email
+                .trim()
+                .toLowerCase(Locale.ROOT);
+
+        login = login
+                .trim()
+                .toLowerCase(Locale.ROOT);
+
         this.name = name;
         this.email = email;
         this.login = login;

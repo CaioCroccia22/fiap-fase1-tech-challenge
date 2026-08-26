@@ -13,6 +13,8 @@ services:
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME:-fiapdb}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:-fiapdb}
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    env_file:
+      - local.env
     depends_on:
       db:
         condition: service_healthy

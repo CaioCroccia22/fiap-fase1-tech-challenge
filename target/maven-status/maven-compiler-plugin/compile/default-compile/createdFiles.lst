@@ -39,6 +39,7 @@ com/github/techChallenge/shared/UnauthorizedException.class
 com/github/techChallenge/application/exceptions/GlobalExceptionHandler.class
 com/github/techChallenge/infrastructure/controllers/IUserController.class
 com/github/techChallenge/infrastructure/controllers/UserController.class
+com/github/techChallenge/application/exceptions/GlobalExceptionHandler$1.class
 com/github/techChallenge/application/exceptions/BusinessException.class
 com/github/techChallenge/application/exceptions/DuplicateEmailException.class
 com/github/techChallenge/domain/user/dto/UserUpdateOutputDTO.class

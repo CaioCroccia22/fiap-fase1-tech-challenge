@@ -6,7 +6,7 @@ import com.github.techChallenge.domain.user.dto.UserUpdateInputDTO;
 import org.springframework.data.domain.Page;
 
 public interface IUserGateway {
-    User create(UserCreateInputDTO dto);
+    User create(User user);
     User update(User user, Long id);
     User find(Long id);
     Page<User> listByName(String name, int page, int offset);
@@ -18,4 +18,5 @@ public interface IUserGateway {
     boolean loginExists(String login, Long id);
     boolean existById(Long id);
     boolean changePassword(String rawPassword, String login);
+
 }
