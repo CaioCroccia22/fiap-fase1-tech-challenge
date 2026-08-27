@@ -10,6 +10,7 @@ import com.github.techChallenge.domain.user.User;
 import com.github.techChallenge.domain.user.dto.UserOutputDTO;
 import com.github.techChallenge.domain.user.dto.UserUpdateInputDTO;
 import com.github.techChallenge.infrastructure.entities.user.UserEntity;
+import com.github.techChallenge.infrastructure.security.ISecurityConfig;
 
 import java.util.Optional;
 

@@ -84,8 +84,6 @@ public class UserGateway implements IUserGateway {
     }
 
     public boolean changePassword(String rawPassword, String login){
-        System.out.println(login);
-        System.out.println(repository.existsByLogin(login));
         if (!repository.existsByLogin(login)) {throw new UnauthorizedException() {
         };}
         return repository.updatePasswordByLogin(securityConfig.passwordEncoder(rawPassword), login);

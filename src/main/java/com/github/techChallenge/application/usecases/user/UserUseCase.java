@@ -2,6 +2,7 @@ package com.github.techChallenge.application.usecases.user;
 
 import com.github.techChallenge.application.gateways.UserGateway;
 import com.github.techChallenge.domain.user.IUserMapper;
+import com.github.techChallenge.infrastructure.security.ISecurityConfig;
 
 public class UserUseCase {
     protected final UserGateway gateway;

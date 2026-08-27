@@ -14,8 +14,8 @@ import org.springframework.context.annotation.Configuration;
 public class UserConfig {
 
     @Bean
-    CreateUserUseCase createUserUseCase(UserGateway gateway, IUserMapper mapper) {
-        return new CreateUserUseCase(gateway, mapper);
+    CreateUserUseCase createUserUseCase(UserGateway gateway, IUserMapper mapper, ISecurityConfig securityConfig) {
+        return new CreateUserUseCase(gateway, mapper, securityConfig);
     }
 
     @Bean

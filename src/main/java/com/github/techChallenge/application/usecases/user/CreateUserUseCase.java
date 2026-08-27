@@ -5,18 +5,26 @@ import com.github.techChallenge.domain.user.User;
 import com.github.techChallenge.domain.user.dto.UserCreateInputDTO;
 import com.github.techChallenge.domain.user.dto.UserOutputDTO;
 import com.github.techChallenge.application.gateways.UserGateway;
+import com.github.techChallenge.infrastructure.security.ISecurityConfig;
 import com.github.techChallenge.shared.EmailAlreadyExistsException;
 import com.github.techChallenge.shared.LoginAlreadyExistsException;
 
 public class CreateUserUseCase extends UserUseCase {
-
-    public CreateUserUseCase(UserGateway gateway, IUserMapper mapper) {
+    private final ISecurityConfig security;
+    public CreateUserUseCase(UserGateway gateway, IUserMapper mapper, ISecurityConfig security) {
         super(gateway, mapper);
+        this.security = security;
     }
 
     public UserOutputDTO execute(UserCreateInputDTO dto) {
 
-        User user = User.create(dto.name(), dto.email(), dto.login(), dto.password(), dto.level(), dto.address());
+        User user = User.create(
+                dto.name(),
+                dto.email(),
+                dto.login(),
+                security.passwordEncoder(dto.password()),
+                dto.level(),
+                dto.address());
 
         if (gateway.emailExists(user.getEmail()))
             throw new EmailAlreadyExistsException();
