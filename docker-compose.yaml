@@ -31,6 +31,8 @@ services:
       --default-time-zone=-03:00
     ports:
       - "3306:3306"
+    expose:
+      - 3306
     volumes:
       - db_data:/var/lib/mysql
       - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
