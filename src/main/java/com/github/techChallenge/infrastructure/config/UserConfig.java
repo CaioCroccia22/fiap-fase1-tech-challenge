@@ -2,13 +2,12 @@ package com.github.techChallenge.infrastructure.config;
 
 import com.github.techChallenge.application.gateways.user.IUserGateway;
 import com.github.techChallenge.application.gateways.user.UserGateway;
-import com.github.techChallenge.application.repositories.IUserLevelRepository;
-import com.github.techChallenge.application.repositories.IUserRepository;
+import com.github.techChallenge.application.repositories.IUserTypeRepository;
 import com.github.techChallenge.application.usecases.user.*;
-import com.github.techChallenge.application.validators.UserLevelValidator;
+import com.github.techChallenge.application.validators.UserTypeValidator;
 import com.github.techChallenge.application.validators.UserValidator;
 import com.github.techChallenge.domain.user.IUserMapper;
-import com.github.techChallenge.domain.userlevel.IUserLevelMapper;
+import com.github.techChallenge.domain.usertype.IUserTypeMapper;
 import com.github.techChallenge.infrastructure.mappers.UserMapper;
 import com.github.techChallenge.infrastructure.repositories.user.UserRepository;
 import com.github.techChallenge.infrastructure.repositories.user.UserRepositoryGateway;
@@ -51,13 +50,13 @@ public class UserConfig {
 
     @Bean
     UserGateway userGateway(UserRepositoryGateway userRepositoryGateway, UserMapper userMapper, ISecurityConfig securityConfig,
-                            IUserLevelRepository userLevelRepository) {
-        return new UserGateway(userRepositoryGateway, userMapper, securityConfig, userLevelRepository);
+                            IUserTypeRepository userTypeRepository) {
+        return new UserGateway(userRepositoryGateway, userMapper, securityConfig, userTypeRepository);
     }
 
     @Bean
-    UserRepositoryGateway userRepositoryGateway(UserRepository repository, IUserMapper mapper, IUserLevelMapper userLevelMapper) {
-        return new UserRepositoryGateway(repository, mapper, userLevelMapper);
+    UserRepositoryGateway userRepositoryGateway(UserRepository repository, IUserMapper mapper, IUserTypeMapper userTypeMapper) {
+        return new UserRepositoryGateway(repository, mapper, userTypeMapper);
     }
 
     @Bean
@@ -66,9 +65,9 @@ public class UserConfig {
     }
 
     @Bean
-    GrantUserLevelUseCase grantUserLevelUseCase(IUserGateway gateway, IUserMapper mapper, UserValidator userValidator,
-                          UserLevelValidator userLevelValidator) {
-        return new GrantUserLevelUseCase(gateway, mapper, userValidator, userLevelValidator);
+    GrantUserTypeUseCase grantUserTypeUseCase(IUserGateway gateway, IUserMapper mapper, UserValidator userValidator,
+                          UserTypeValidator userTypeValidator) {
+        return new GrantUserTypeUseCase(gateway, mapper, userValidator, userTypeValidator);
     }
 
 }

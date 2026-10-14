@@ -4,7 +4,6 @@ import com.github.techChallenge.domain.user.Address;
 import com.github.techChallenge.domain.user.IUserMapper;
 import com.github.techChallenge.domain.user.User;
 import com.github.techChallenge.domain.user.dto.UserOutputDTO;
-import com.github.techChallenge.domain.userlevel.IUserLevelMapper;
 import com.github.techChallenge.infrastructure.entities.user.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class UserMapper implements IUserMapper {
 
     @Autowired
-    private UserLevelMapper userLevelMapper;
+    private UserTypeMapper userTypeMapper;
     @Override
     public User fromEntityToDomain(UserEntity userEntity) {
         Address address = new Address(
@@ -34,7 +33,8 @@ public class UserMapper implements IUserMapper {
             userEntity.getEmail(),
             userEntity.getLogin(),
             userEntity.getPassword(),
-            userLevelMapper.fromEntityToDomain(userEntity.getLevel()),
+            userEntity.getUserLevel(),
+            userTypeMapper.fromEntityToDomain(userEntity.getUserType()),
             address,
             userEntity.getCreatedAt(),
             userEntity.getUpdatedAt()
@@ -49,7 +49,8 @@ public class UserMapper implements IUserMapper {
             user.getName(),
             user.getEmail(),
             user.getLogin(),
-            userLevelMapper.fromDomainToOutputDTO(user.getLevel()),
+            user.getUserLevel(),
+            userTypeMapper.fromDomainToOutputDTO(user.getType()),
             user.getAddress(),
             user.getCreatedAt(),
             user.getUpdatedAt()
@@ -76,7 +77,8 @@ public class UserMapper implements IUserMapper {
                     u.getEmail(),
                     u.getLogin(),
                     null,
-                    userLevelMapper.fromEntityToDomain(u.getLevel()),
+                    u.getUserLevel(),
+                    userTypeMapper.fromEntityToDomain(u.getUserType()),
                     address,
                     u.getCreatedAt(),
                     u.getUpdatedAt()
@@ -92,7 +94,8 @@ public class UserMapper implements IUserMapper {
                 u.getName(),
                 u.getEmail(),
                 u.getLogin(),
-                userLevelMapper.fromDomainToOutputDTO(u.getLevel()),
+                u.getUserLevel(),
+                userTypeMapper.fromDomainToOutputDTO(u.getType()),
                 u.getAddress(),
                 u.getCreatedAt(),
                 u.getUpdatedAt()

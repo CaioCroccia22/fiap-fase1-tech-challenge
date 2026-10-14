@@ -32,6 +32,7 @@ public class CreateUserUseCase extends UserUseCase {
                 dto.email(),
                 dto.login(),
                 security.passwordEncoder(dto.password(), dto.login()),
+                dto.userLevel(),
                 dto.address());
 
 

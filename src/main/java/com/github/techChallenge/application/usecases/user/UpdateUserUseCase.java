@@ -28,7 +28,7 @@ public class UpdateUserUseCase extends UserUseCase {
             throw new DuplicateLoginException(dto.login());
 
         User user = new User();
-        user.update(dto.name(), dto.email(), dto.login(), dto.address());
+        user.update(dto.name(), dto.email(), dto.login(), dto.userLevel(), dto.address());
 
         user = this.gateway.update(user, id);
         return this.mapper.fromDomainToOutputDTO(user);

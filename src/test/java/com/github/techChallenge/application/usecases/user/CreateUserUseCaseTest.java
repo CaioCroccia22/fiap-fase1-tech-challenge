@@ -5,13 +5,12 @@ import com.github.techChallenge.application.validators.UserValidator;
 import com.github.techChallenge.domain.user.Address;
 import com.github.techChallenge.domain.user.IUserMapper;
 import com.github.techChallenge.domain.user.User;
-import com.github.techChallenge.domain.userlevel.UserLevel;
+import com.github.techChallenge.domain.user.UserLevel;
 import com.github.techChallenge.domain.user.dto.UserCreateInputDTO;
 import com.github.techChallenge.domain.user.dto.UserOutputDTO;
 import com.github.techChallenge.infrastructure.security.ISecurityConfig;
 import com.github.techChallenge.shared.EmailAlreadyExistsException;
 import com.github.techChallenge.shared.LoginAlreadyExistsException;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -56,7 +55,7 @@ class CreateUserUseCaseTest {
                 "UF","Brasil");
 
         this.user = User.create("User 1","user@user.com.br","user",
-                "password", address);
+                "password", UserLevel.CUSTOMER, address);
     }
 
     @Test
@@ -67,11 +66,11 @@ class CreateUserUseCaseTest {
                 "UF","Brasil");
 
         User createdUser = new User(1L, "User 1","user@user.com.br",
-                "user","pitipiripitipiripitipó", null,
+                "user","pitipiripitipiripitipó", UserLevel.CUSTOMER, null,
                 address, LocalDateTime.now(), LocalDateTime.now());
 
         UserOutputDTO convertedToDTOUser = new UserOutputDTO(createdUser.getId(),
-                        createdUser.getName(), createdUser.getEmail(), createdUser.getLogin(),
+                        createdUser.getName(), createdUser.getEmail(), createdUser.getLogin(), UserLevel.CUSTOMER,
                         null, address, createdUser.getCreatedAt(),
                         createdUser.getUpdatedAt());
 
@@ -82,7 +81,7 @@ class CreateUserUseCaseTest {
         when(mapper.fromDomainToOutputDTO(createdUser)).thenReturn(convertedToDTOUser);
 
         UserCreateInputDTO inputDTO = new UserCreateInputDTO("User 1","user@user.com.br",
-                "user","password", address);
+                "user","password", address, UserLevel.CUSTOMER);
 
         UserOutputDTO outputDTO = createUserUseCase.execute(inputDTO);
 
@@ -110,18 +109,18 @@ class CreateUserUseCaseTest {
                 "UF","Brasil");
 
         User createdUser = new User(1L, "User 1","user@user.com.br",
-                "user","pitipiripitipiripitipó", null,
+                "user","pitipiripitipiripitipó", UserLevel.CUSTOMER, null,
                 address, LocalDateTime.now(), LocalDateTime.now());
 
         UserOutputDTO convertedToDTOUser = new UserOutputDTO(createdUser.getId(),
                 createdUser.getName(), createdUser.getEmail(), createdUser.getLogin(),
-                null, address, createdUser.getCreatedAt(),
+                UserLevel.CUSTOMER,null, address, createdUser.getCreatedAt(),
                 createdUser.getUpdatedAt());
 
         when(userValidator.emailExists(any(String.class))).thenReturn(true);
 
         UserCreateInputDTO inputDTO = new UserCreateInputDTO("User 1","user@user.com.br",
-                "user","password", address);
+                "user","password", address, UserLevel.CUSTOMER);
         assertThrows(EmailAlreadyExistsException.class, () -> createUserUseCase.execute(inputDTO));
 
     }
@@ -134,19 +133,19 @@ class CreateUserUseCaseTest {
                 "UF","Brasil");
 
         User createdUser = new User(1L, "User 1","user@user.com.br",
-                "user","pitipiripitipiripitipó", null,
+                "user","pitipiripitipiripitipó", UserLevel.CUSTOMER, null,
                 address, LocalDateTime.now(), LocalDateTime.now());
 
         UserOutputDTO convertedToDTOUser = new UserOutputDTO(createdUser.getId(),
                 createdUser.getName(), createdUser.getEmail(), createdUser.getLogin(),
-                null, address, createdUser.getCreatedAt(),
+                UserLevel.CUSTOMER, null, address, createdUser.getCreatedAt(),
                 createdUser.getUpdatedAt());
 
         when(userValidator.emailExists(any(String.class))).thenReturn(false);
         when(userValidator.loginExists(any(String.class))).thenReturn(true);
 
         UserCreateInputDTO inputDTO = new UserCreateInputDTO("User 1","user@user.com.br",
-                "user","password", address);
+                "user","password", address, UserLevel.CUSTOMER);
         assertThrows(LoginAlreadyExistsException.class, () -> createUserUseCase.execute(inputDTO));
     }
 }

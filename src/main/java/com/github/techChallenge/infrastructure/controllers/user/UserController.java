@@ -27,7 +27,7 @@ public class UserController implements IUserController {
     private final DeleteUserUseCase deleteUserUseCase;
     private final UserValidator     userValidator;
     private final ChangePasswordUseCase changePasswordUser;
-    private final GrantUserLevelUseCase grantUserLevelUseCase;
+    private final GrantUserTypeUseCase grantUserTypeUseCase;
 
     public UserController(CreateUserUseCase createUserUseCase,
                           UpdateUserUseCase updateUserUseCase,
@@ -35,7 +35,7 @@ public class UserController implements IUserController {
                           ListUserUseCase listUserUseCase,
                           DeleteUserUseCase deleteUserUseCase, UserValidator userValidator,
                           ChangePasswordUseCase changePasswordUser,
-                          GrantUserLevelUseCase grantUserLevelUseCase
+                          GrantUserTypeUseCase grantUserTypeUseCase
     ) {
         this.createUserUseCase = createUserUseCase;
         this.updateUserUseCase = updateUserUseCase;
@@ -44,7 +44,7 @@ public class UserController implements IUserController {
         this.deleteUserUseCase = deleteUserUseCase;
         this.userValidator = userValidator;
         this.changePasswordUser = changePasswordUser;
-        this.grantUserLevelUseCase = grantUserLevelUseCase;
+        this.grantUserTypeUseCase = grantUserTypeUseCase;
     }
 
     @PostMapping("/")
@@ -136,8 +136,8 @@ public class UserController implements IUserController {
 
     @Override
     @PatchMapping("/grant-level")
-    public ResponseEntity<UserOutputDTO> grantLevel(GrantUserLevelInputDTO dto) {
-        UserOutputDTO response = this.grantUserLevelUseCase.execute(dto);
+    public ResponseEntity<UserOutputDTO> grantLevel(GrantUserTypeInputDTO dto) {
+        UserOutputDTO response = this.grantUserTypeUseCase.execute(dto);
 
         return ResponseEntity.ok(response);
     }

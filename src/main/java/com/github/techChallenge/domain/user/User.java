@@ -1,6 +1,6 @@
 package com.github.techChallenge.domain.user;
 
-import com.github.techChallenge.domain.userlevel.UserLevel;
+import com.github.techChallenge.domain.usertype.UserType;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
@@ -12,7 +12,8 @@ public class User {
     private String email;
     private String login;
     private String password;
-    private UserLevel level;
+    private UserLevel userLevel;
+    private UserType type;
     private Address address;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -26,7 +27,8 @@ public class User {
             String email,
             String login,
             String password,
-            UserLevel level,
+            UserLevel userLevel,
+            UserType type,
             Address address,
             LocalDateTime createdAt,
             LocalDateTime updatedAt
@@ -36,7 +38,8 @@ public class User {
         this.email = email;
         this.login = login;
         this.password = password;
-        this.level = level;
+        this.userLevel = userLevel;
+        this.type = type;
         this.address = address;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -47,6 +50,7 @@ public class User {
             String email,
             String login,
             String password,
+            UserLevel userLevel,
             Address address
     ) {
         LocalDateTime now = LocalDateTime.now();
@@ -64,6 +68,7 @@ public class User {
                 email,
                 login,
                 password,
+                userLevel,
                 null,
                 address,
                 now,
@@ -75,6 +80,7 @@ public class User {
             String name,
             String email,
             String login,
+            UserLevel userLevel,
             Address address
     ) {
 
@@ -90,6 +96,7 @@ public class User {
         this.email = email;
         this.login = login;
         this.address = address;
+        this.userLevel = userLevel;
         this.updatedAt = LocalDateTime.now();
     }
 
@@ -98,8 +105,8 @@ public class User {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void grantLevel(UserLevel userLevel) {
-        this.level = userLevel;
+    public void grantType(UserType userType) {
+        this.type = userType;
     }
 
 
@@ -123,8 +130,8 @@ public class User {
         return password;
     }
 
-    public UserLevel getLevel() {
-        return level;
+    public UserType getType() {
+        return type;
     }
 
     public Address getAddress() {
@@ -139,4 +146,5 @@ public class User {
         return updatedAt;
     }
 
+    public UserLevel getUserLevel() {return userLevel;}
 }

@@ -431,5 +431,5 @@ public interface IUserController {
     })
     ResponseEntity<UserOutputDTO> grantLevel(
             @Parameter(description = "Dados para atribuição de nível do usuário")
-            GrantUserLevelInputDTO dto);
+            GrantUserTypeInputDTO dto);
 }

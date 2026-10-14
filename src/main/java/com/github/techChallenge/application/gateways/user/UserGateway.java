@@ -1,11 +1,11 @@
 package com.github.techChallenge.application.gateways.user;
 
-import com.github.techChallenge.application.repositories.IUserLevelRepository;
+import com.github.techChallenge.application.repositories.IUserTypeRepository;
 import com.github.techChallenge.domain.user.IUserMapper;
 import com.github.techChallenge.domain.user.User;
 import com.github.techChallenge.application.repositories.IUserRepository;
-import com.github.techChallenge.domain.user.dto.GrantUserLevelInputDTO;
-import com.github.techChallenge.domain.userlevel.UserLevel;
+import com.github.techChallenge.domain.user.dto.GrantUserTypeInputDTO;
+import com.github.techChallenge.domain.usertype.UserType;
 import com.github.techChallenge.infrastructure.security.ISecurityConfig;
 import org.springframework.data.domain.Page;
 
@@ -14,14 +14,14 @@ public class UserGateway implements IUserGateway {
     private final IUserRepository repository;
     private final ISecurityConfig securityConfig;
     private final IUserMapper mapper;
-    private final IUserLevelRepository userLevelRepository;
+    private final IUserTypeRepository userTypeRepository;
 
     public UserGateway(IUserRepository repository, IUserMapper mapper,ISecurityConfig securityConfig,
-                       IUserLevelRepository userLevelRepository) {
+                       IUserTypeRepository userTypeRepository) {
         this.repository = repository;
         this.securityConfig = securityConfig;
         this.mapper = mapper;
-        this.userLevelRepository = userLevelRepository;
+        this.userTypeRepository = userTypeRepository;
     }
 
     @Override
@@ -72,11 +72,11 @@ public class UserGateway implements IUserGateway {
     }
 
     @Override
-    public User grantUserLevel(GrantUserLevelInputDTO dto) {
+    public User grantUserType(GrantUserTypeInputDTO dto) {
         User user = this.repository.findByID(dto.userID());
-        UserLevel userLevel = this.userLevelRepository.findByID(dto.userLevelID());
+        UserType userType = this.userTypeRepository.findByID(dto.userTypeID());
 
-        user.grantLevel(userLevel);
+        user.grantType(userType);
         user = this.repository.update(user, dto.userID());
         return user;
     }

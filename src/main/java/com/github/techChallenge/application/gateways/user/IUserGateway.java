@@ -1,7 +1,7 @@
 package com.github.techChallenge.application.gateways.user;
 
 import com.github.techChallenge.domain.user.User;
-import com.github.techChallenge.domain.user.dto.GrantUserLevelInputDTO;
+import com.github.techChallenge.domain.user.dto.GrantUserTypeInputDTO;
 import org.springframework.data.domain.Page;
 
 public interface IUserGateway {
@@ -18,6 +18,6 @@ public interface IUserGateway {
     boolean loginExists(String login, Long id);
     boolean existById(Long id);
     boolean changePassword(String rawPassword, String login);
-    User grantUserLevel(GrantUserLevelInputDTO dto);
+    User grantUserType(GrantUserTypeInputDTO dto);
 
 }

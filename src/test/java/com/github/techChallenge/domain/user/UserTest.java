@@ -1,6 +1,5 @@
 package com.github.techChallenge.domain.user;
 
-import com.github.techChallenge.domain.userlevel.UserLevel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,7 @@ class UserTest {
                 "UF","Brasil");
 
         this.user = User.create("User 1","user@user.com.br","user",
-                "password", address);
+                "password", UserLevel.CUSTOMER, address);
     }
 
     @Test
@@ -56,7 +55,7 @@ class UserTest {
                 "11235-900","Bairro alterado","Cidade alterado",
                 "UF alterado","Argentinha");
 
-        user.update("User 2", "user_alterado@user.com.br", "user_alterado", address);
+        user.update("User 2", "user_alterado@user.com.br", "user_alterado", UserLevel.CUSTOMER, address);
 
         assertNull(user.getId());
         assertEquals("User 2", user.getName());

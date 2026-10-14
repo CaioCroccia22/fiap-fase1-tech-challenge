@@ -1,7 +1,7 @@
 package com.github.techChallenge.domain.user.dto;
 
 import com.github.techChallenge.domain.user.Address;
-import com.github.techChallenge.domain.userlevel.UserLevel;
+import com.github.techChallenge.domain.user.UserLevel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -59,10 +59,15 @@ public record UserCreateInputDTO(
         )
         String password,
 
-        @Schema(description = "Endereço do usuário")
+        @Schema(description = "Endereço do usuário", implementation = Address.class)
         @NotNull(message = "O endereço é obrigatório.")
         @Valid
-        Address address
+        Address address,
+
+        @Schema(description = "Nível de usuário", allowableValues = {"OWNER", "CUSTOMER"})
+        @NotNull(message = "O nível de usuário é obrigatório.")
+        @Valid
+        UserLevel userLevel
 
 ) {
 }

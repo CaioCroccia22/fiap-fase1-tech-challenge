@@ -1,7 +1,8 @@
 package com.github.techChallenge.infrastructure.entities.user;
 
 import com.github.techChallenge.domain.user.User;
-import com.github.techChallenge.infrastructure.entities.userlevel.UserLevelEntity;
+import com.github.techChallenge.domain.user.UserLevel;
+import com.github.techChallenge.infrastructure.entities.usertype.UserTypeEntity;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
@@ -23,10 +24,14 @@ public class UserEntity {
     @Column(name = "senha", nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "nivel", nullable = false)
+    private UserLevel userLevel;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="usuarios_nivel_id")
     @Nullable
-    private UserLevelEntity level;
+    private UserTypeEntity userType;
 
     @Embedded
     private AddressEntity address;
@@ -67,12 +72,20 @@ public class UserEntity {
         this.password = password;
     }
 
-    public UserLevelEntity getLevel() {
-        return level;
+    public UserTypeEntity getUserType() {
+        return userType;
     }
 
-    public void setLevel(UserLevelEntity level) {
-        this.level = level;
+    public void setUserType(UserTypeEntity userType) {
+        this.userType = userType;
+    }
+
+    public UserLevel getUserLevel() {
+        return userLevel;
+    }
+
+    public void setUserLevel(UserLevel userLevel) {
+        this.userLevel = userLevel;
     }
 
     public AddressEntity getAddress() {
@@ -100,12 +113,12 @@ public class UserEntity {
     public UserEntity(){}
 
     public UserEntity(User user) {
-        if (Optional.ofNullable(user.getId()).isPresent() && user.getId() > 0)
-            this.setId(user.getId());
+        if (Optional.ofNullable(user.getId()).isPresent() && user.getId() > 0) this.setId(user.getId());
 
         if (Optional.ofNullable(user.getName()).isPresent()) this.setName(user.getName());
         if (Optional.ofNullable(user.getLogin()).isPresent()) this.setLogin(user.getLogin());
         if (Optional.ofNullable(user.getEmail()).isPresent()) this.setEmail(user.getEmail());
+        if (Optional.ofNullable(user.getUserLevel()).isPresent()) this.setUserLevel(user.getUserLevel());
         if (Optional.ofNullable(user.getPassword()).isPresent()) this.setPassword(user.getPassword());
         if (Optional.ofNullable(user.getAddress()).isPresent()) this.setAddress(new AddressEntity(user.getAddress()));
         if (Optional.ofNullable(user.getCreatedAt()).isPresent()) this.setCreatedAt(user.getCreatedAt());

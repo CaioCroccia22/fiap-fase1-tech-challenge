@@ -4,7 +4,7 @@ import com.github.techChallenge.application.exceptions.UserNotFoundException;
 import com.github.techChallenge.application.repositories.IUserRepository;
 import com.github.techChallenge.domain.user.IUserMapper;
 import com.github.techChallenge.domain.user.User;
-import com.github.techChallenge.domain.userlevel.IUserLevelMapper;
+import com.github.techChallenge.domain.usertype.IUserTypeMapper;
 import com.github.techChallenge.infrastructure.entities.user.AddressEntity;
 import com.github.techChallenge.infrastructure.entities.user.UserEntity;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -20,9 +20,9 @@ public class UserRepositoryGateway implements IUserRepository {
 
     private IUserMapper mapper;
 
-    private IUserLevelMapper userLevelMapper;
+    private IUserTypeMapper userLevelMapper;
 
-    public UserRepositoryGateway(UserRepository repository, IUserMapper mapper, IUserLevelMapper userLevelMapper) {
+    public UserRepositoryGateway(UserRepository repository, IUserMapper mapper, IUserTypeMapper userLevelMapper) {
         this.repository = repository;
         this.mapper = mapper;
         this.userLevelMapper = userLevelMapper;
@@ -48,8 +48,9 @@ public class UserRepositoryGateway implements IUserRepository {
         userEntity.setEmail(user.getEmail());
         userEntity.setUpdatedAt(user.getUpdatedAt());
         userEntity.setAddress(addressEntity);
-        if (Optional.ofNullable(user.getLevel()).isPresent()) {
-            userEntity.setLevel(this.userLevelMapper.fromDomainToEntity(user.getLevel()));
+        userEntity.setUserLevel(user.getUserLevel());
+        if (Optional.ofNullable(user.getType()).isPresent()) {
+            userEntity.setUserType(this.userLevelMapper.fromDomainToEntity(user.getType()));
         }
 
         userEntity = this.repository.save(userEntity);
