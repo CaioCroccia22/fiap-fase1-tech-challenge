@@ -106,6 +106,34 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
     }
 
+    @ExceptionHandler(MenuItemNotFoundException.class)
+    public ResponseEntity<ProblemDetail> handleMenuItemNotFound(
+            MenuItemNotFoundException exception,
+            HttpServletRequest request
+    ) {
+        return buildResponse(
+                HttpStatus.NOT_FOUND,
+                "Item do cardápio não encontrado",
+                exception.getMessage(),
+                exception.getErrorCode(),
+                request
+        );
+    }
+
+    @ExceptionHandler(DuplicateMenuItemNameException.class)
+    public ResponseEntity<ProblemDetail> handleDuplicateMenuItemName(
+            DuplicateMenuItemNameException exception,
+            HttpServletRequest request
+    ) {
+        return buildResponse(
+                HttpStatus.CONFLICT,
+                "Item do cardápio já cadastrado",
+                exception.getMessage(),
+                exception.getErrorCode(),
+                request
+        );
+    }
+
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<ProblemDetail> handleConflict(
             ConflictException exception,
