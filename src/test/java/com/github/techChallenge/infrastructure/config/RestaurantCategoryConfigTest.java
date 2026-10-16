@@ -3,6 +3,7 @@ package com.github.techChallenge.infrastructure.config;
 
 import com.github.techChallenge.application.gateways.restaurantCategory.IRestaurantCategoryGateway;
 import com.github.techChallenge.application.gateways.restaurantCategory.RestaurantCategoryGateway;
+import com.github.techChallenge.application.repositories.IRestaurantCategoryRepository;
 import com.github.techChallenge.application.usecases.restaurantCategory.*;
 import com.github.techChallenge.application.validators.RestaurantCategoryValidator;
 import com.github.techChallenge.domain.restaurantCategory.IRestaurantCategoryMapper;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -29,16 +31,13 @@ public class RestaurantCategoryConfigTest {
     private IRestaurantCategoryGateway gateway;
 
     @Mock
-    private IRestaurantCategoryMapper mapperInterface;
-
-    @Mock
     private RestaurantCategoryMapper mapper;
 
     @Mock
     private RestaurantCategoryValidator validator;
 
     @Mock
-    private RestaurantCategoryRepositoryGateway repositoryGateway;
+    private IRestaurantCategoryRepository repository;
 
     private RestaurantCategoryConfig config;
 
@@ -59,8 +58,8 @@ public class RestaurantCategoryConfigTest {
 
         //Assert
         Assertions.assertNotNull(createRestaurantCategoryUseCase);
-        Assertions.assertTrue(getFields(createRestaurantCategoryUseCase, gateway));
-        Assertions.assertTrue(getFields(createRestaurantCategoryUseCase, mapper));
+        Assertions.assertSame(gateway, ReflectionTestUtils.getField(createRestaurantCategoryUseCase, "gateway"));
+        Assertions.assertSame(mapper, ReflectionTestUtils.getField(createRestaurantCategoryUseCase, "mapper"));
 
     }
 
@@ -68,25 +67,25 @@ public class RestaurantCategoryConfigTest {
     @DisplayName("Deve criar UpdateRestaurantCategoryUseCase com gateway e mapper")
     void deveGerarUpdateRestaurantCategoryUseCase() throws IllegalAccessException {
         // Act
-        UpdateRestaurantCategoryUseCase useCase = config.updateRestaurantCategoryUseCase(gateway, mapper, validator);
+        UpdateRestaurantCategoryUseCase updateRestaurantCategoryUseCase = config.updateRestaurantCategoryUseCase(gateway, mapper, validator);
 
         // Assert
-        Assertions.assertNotNull(useCase);
-        Assertions.assertTrue(getFields(useCase, gateway));
-        Assertions.assertTrue(getFields(useCase, mapper));
-        Assertions.assertTrue(getFields(useCase, validator));
+        Assertions.assertNotNull(updateRestaurantCategoryUseCase);
+        Assertions.assertSame(gateway, ReflectionTestUtils.getField(updateRestaurantCategoryUseCase, "gateway"));
+        Assertions.assertSame(mapper, ReflectionTestUtils.getField(updateRestaurantCategoryUseCase, "mapper"));
+        Assertions.assertSame(validator, ReflectionTestUtils.getField(updateRestaurantCategoryUseCase, "restaurantCategoryValidator"));
     }
 
     @Test
     @DisplayName("Deve criar FindRestaurantCategoryUseCase com gateway e mapper")
     void deveGerarFindRestaurantCategoryUseCase() throws IllegalAccessException {
         // Act
-        FindRestaurantCategoryUseCase useCase = config.findRestaurantCategoryUseCase(gateway, mapper);
+        FindRestaurantCategoryUseCase findRestaurantCategoryUseCase = config.findRestaurantCategoryUseCase(gateway, mapper);
 
         // Assert
-        Assertions.assertNotNull(useCase);
-        Assertions.assertTrue(getFields(useCase, gateway));
-        Assertions.assertTrue(getFields(useCase, mapper));
+        Assertions.assertNotNull(findRestaurantCategoryUseCase);
+        Assertions.assertSame(gateway, ReflectionTestUtils.getField(findRestaurantCategoryUseCase, "gateway"));
+        Assertions.assertSame(mapper, ReflectionTestUtils.getField(findRestaurantCategoryUseCase, "mapper"));
     }
 
 
@@ -94,49 +93,49 @@ public class RestaurantCategoryConfigTest {
     @DisplayName("Deve criar ListRestaurantCategoryUseCase com gateway e mapper")
     void deveGerarListRestaurantCategoryUseCase() throws IllegalAccessException {
         // Act
-        ListRestaurantCategoryUseCase useCase = config.listRestaurantCategoryUseCase(gateway, mapper);
+        ListRestaurantCategoryUseCase listRestaurantCategoryUseCase = config.listRestaurantCategoryUseCase(gateway, mapper);
 
         // Assert
-        Assertions.assertNotNull(useCase);
-        Assertions.assertTrue(getFields(useCase, gateway));
-        Assertions.assertTrue(getFields(useCase, mapper));
+        Assertions.assertNotNull(listRestaurantCategoryUseCase);
+        Assertions.assertSame(gateway, ReflectionTestUtils.getField(listRestaurantCategoryUseCase, "gateway"));
+        Assertions.assertSame(mapper, ReflectionTestUtils.getField(listRestaurantCategoryUseCase, "mapper"));
     }
 
     @Test
     @DisplayName("Deve criar DeleteRestaurantCategoryUseCase com gateway e mapper")
     void deveGerarDeleteRestaurantCategoryUseCase() throws IllegalAccessException {
         // Act
-        DeleteRestaurantCategoryUseCase useCase = config.deleteRestaurantCategoryUseCase(gateway, mapper);
+        DeleteRestaurantCategoryUseCase deleteRestaurantCategoryUseCase = config.deleteRestaurantCategoryUseCase(gateway, mapper);
 
         // Assert
-        Assertions.assertNotNull(useCase);
-        Assertions.assertTrue(getFields(useCase, gateway));
-        Assertions.assertTrue(getFields(useCase, mapper));
+        Assertions.assertNotNull(deleteRestaurantCategoryUseCase);
+        Assertions.assertSame(gateway, ReflectionTestUtils.getField(deleteRestaurantCategoryUseCase, "gateway"));
+        Assertions.assertSame(mapper, ReflectionTestUtils.getField(deleteRestaurantCategoryUseCase, "mapper"));
     }
 
     @Test
     @DisplayName("Deve criar RestaurantCategoryValidator com gateway e mapper")
     void deveGerarRestaurantCategoryValidator() throws IllegalAccessException {
         // Act
-        RestaurantCategoryValidator created = config.restaurantCategoryValidator(gateway, mapperInterface);
+        RestaurantCategoryValidator restaurantCategoryValidator = config.restaurantCategoryValidator(gateway, mapper);
 
         // Assert
-        Assertions.assertNotNull(created);
-        Assertions.assertTrue(getFields(created, gateway));
-        Assertions.assertTrue(getFields(created, mapperInterface));
+        Assertions.assertNotNull(restaurantCategoryValidator);
+        Assertions.assertSame(gateway, ReflectionTestUtils.getField(restaurantCategoryValidator, "gateway"));
+        Assertions.assertSame(mapper, ReflectionTestUtils.getField(restaurantCategoryValidator, "mapper"));
     }
 
     @Test
     @DisplayName("Deve criar RestaurantCategoryGateway com repositoryGateway e mapper")
     void deveGerarRestaurantCategoryGateway() throws IllegalAccessException {
         // Act
-        RestaurantCategoryGateway created = config.restaurantCategoryGateway(repositoryGateway, mapper);
+        RestaurantCategoryGateway restaurantCategoryGateway = config.restaurantCategoryGateway(repository, mapper);
 
         // Assert
-        Assertions.assertNotNull(created);
-        Assertions.assertInstanceOf(IRestaurantCategoryGateway.class, created);
-        Assertions.assertTrue(getFields(created, repositoryGateway));
-        Assertions.assertTrue(getFields(created, mapper));
+        Assertions.assertNotNull(restaurantCategoryGateway);
+        Assertions.assertInstanceOf(IRestaurantCategoryGateway.class, restaurantCategoryGateway);
+        Assertions.assertSame(repository, ReflectionTestUtils.getField(restaurantCategoryGateway, "repository"));
+        Assertions.assertSame(mapper, ReflectionTestUtils.getField(restaurantCategoryGateway, "mapper"));
     }
 
     @Test
@@ -151,14 +150,23 @@ public class RestaurantCategoryConfigTest {
 
 
 
+    /*
+    Eu fiz com esse
+    metodo primeiro, mas por conta das classes abstratas ele dava erro nos teste
+    Dessa forma usei o ReflectionTestUtils, só que caso troque o nome do campo, se trocar o teste quebra
+
     private static boolean getFields(Object o, Object value) throws IllegalAccessException {
         Class clazz = o.getClass();
         Field[] fields = clazz.getDeclaredFields();
         for(Field f: fields){
+            f.setAccessible(true);//necessario para campos privados - dava erro no UpdateRestaurantCategoryUseCase por conta do validator
             if(f.get(o) == value){
                 return true;
+            } else {
+                Assertions.fail(o.getClass().getSimpleName()
+                        + " não guardou a dependência recebida: " + value);
             }
         }
         return false;
-    }
+    } */
 }
