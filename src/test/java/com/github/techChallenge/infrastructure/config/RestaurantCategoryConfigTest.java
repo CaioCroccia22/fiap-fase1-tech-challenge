@@ -22,11 +22,10 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.lang.reflect.Field;
 import java.util.List;
 
-//Teste do RestaurantCategoryConfig
+
 @ExtendWith(MockitoExtension.class)
 public class RestaurantCategoryConfigTest {
 
-    //Campos tem que estarem publicos para serem lidos
     @Mock
     private IRestaurantCategoryGateway gateway;
 
@@ -50,11 +49,11 @@ public class RestaurantCategoryConfigTest {
     @Test
     @DisplayName("Deve criar CreateUserTypeUseCase com gateway, mapper e validator")
     void deveGerarCreateRestaurantCategoryUseCase() throws IllegalAccessException {
-        //Arrange
-        RestaurantCategoryConfig config = new RestaurantCategoryConfig();
+
 
         // Action
-        var createRestaurantCategoryUseCase = config.createRestaurantCategoryUseCase(gateway, mapper);
+        CreateRestaurantCategoryUseCase createRestaurantCategoryUseCase =
+                config.createRestaurantCategoryUseCase(gateway, mapper);
 
         //Assert
         Assertions.assertNotNull(createRestaurantCategoryUseCase);
@@ -67,7 +66,8 @@ public class RestaurantCategoryConfigTest {
     @DisplayName("Deve criar UpdateRestaurantCategoryUseCase com gateway e mapper")
     void deveGerarUpdateRestaurantCategoryUseCase() throws IllegalAccessException {
         // Act
-        UpdateRestaurantCategoryUseCase updateRestaurantCategoryUseCase = config.updateRestaurantCategoryUseCase(gateway, mapper, validator);
+        UpdateRestaurantCategoryUseCase updateRestaurantCategoryUseCase =
+                config.updateRestaurantCategoryUseCase(gateway, mapper, validator);
 
         // Assert
         Assertions.assertNotNull(updateRestaurantCategoryUseCase);
@@ -148,25 +148,4 @@ public class RestaurantCategoryConfigTest {
         Assertions.assertNotNull(created);
     }
 
-
-
-    /*
-    Eu fiz com esse
-    metodo primeiro, mas por conta das classes abstratas ele dava erro nos teste
-    Dessa forma usei o ReflectionTestUtils, só que caso troque o nome do campo, se trocar o teste quebra
-
-    private static boolean getFields(Object o, Object value) throws IllegalAccessException {
-        Class clazz = o.getClass();
-        Field[] fields = clazz.getDeclaredFields();
-        for(Field f: fields){
-            f.setAccessible(true);//necessario para campos privados - dava erro no UpdateRestaurantCategoryUseCase por conta do validator
-            if(f.get(o) == value){
-                return true;
-            } else {
-                Assertions.fail(o.getClass().getSimpleName()
-                        + " não guardou a dependência recebida: " + value);
-            }
-        }
-        return false;
-    } */
 }

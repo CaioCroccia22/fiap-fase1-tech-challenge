@@ -11,11 +11,14 @@ import com.github.techChallenge.shared.EmailAlreadyExistsException;
 import com.github.techChallenge.shared.LoginAlreadyExistsException;
 
 public class CreateUserUseCase extends UserUseCase {
-    private final ISecurityConfig security;
+
+    private final ISecurityConfig securityConfig;
+
     private final UserValidator validator;
-    public CreateUserUseCase(IUserGateway gateway, IUserMapper mapper, ISecurityConfig security, UserValidator validator) {
+
+    public CreateUserUseCase(IUserGateway gateway, IUserMapper mapper, ISecurityConfig securityConfig, UserValidator validator) {
         super(gateway, mapper);
-        this.security = security;
+        this.securityConfig = securityConfig;
         this.validator = validator;
     }
 
@@ -31,7 +34,7 @@ public class CreateUserUseCase extends UserUseCase {
                 dto.name(),
                 dto.email(),
                 dto.login(),
-                security.passwordEncoder(dto.password(), dto.login()),
+                securityConfig.passwordEncoder(dto.password(), dto.login()),
                 dto.userLevel(),
                 dto.address());
 

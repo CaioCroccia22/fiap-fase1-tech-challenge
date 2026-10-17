@@ -24,22 +24,22 @@ public class UserConfig {
     }
 
     @Bean
-    UpdateUserUseCase updateUserUseCase(IUserGateway gateway, UserMapper mapper, UserValidator userValidator) {
+    UpdateUserUseCase updateUserUseCase(IUserGateway gateway, IUserMapper mapper, UserValidator userValidator) {
         return new UpdateUserUseCase(gateway, mapper, userValidator);
     }
 
     @Bean
-    FindUserUseCase findUserUseCase(IUserGateway gateway, UserMapper mapper) {
+    FindUserUseCase findUserUseCase(IUserGateway gateway, IUserMapper mapper) {
         return new FindUserUseCase(gateway, mapper);
     }
 
     @Bean
-    ListUserUseCase listUserUseCase(IUserGateway gateway, UserMapper mapper) {
+    ListUserUseCase listUserUseCase(IUserGateway gateway, IUserMapper mapper) {
         return new ListUserUseCase(gateway, mapper);
     }
 
     @Bean
-    DeleteUserUseCase deleteUserUseCase(IUserGateway gateway, UserMapper mapper) {
+    DeleteUserUseCase deleteUserUseCase(IUserGateway gateway, IUserMapper mapper) {
         return new DeleteUserUseCase(gateway, mapper);
     }
 
@@ -49,7 +49,7 @@ public class UserConfig {
     }
 
     @Bean
-    UserGateway userGateway(UserRepositoryGateway userRepositoryGateway, UserMapper userMapper, ISecurityConfig securityConfig,
+    UserGateway userGateway(UserRepositoryGateway userRepositoryGateway, IUserMapper userMapper, ISecurityConfig securityConfig,
                             IUserTypeRepository userTypeRepository) {
         return new UserGateway(userRepositoryGateway, userMapper, securityConfig, userTypeRepository);
     }
