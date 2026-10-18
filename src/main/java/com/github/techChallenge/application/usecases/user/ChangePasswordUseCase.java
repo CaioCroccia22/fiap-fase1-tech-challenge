@@ -7,18 +7,18 @@ import com.github.techChallenge.infrastructure.security.ISecurityConfig;
 import com.github.techChallenge.shared.UnauthorizedException;
 
 public class ChangePasswordUseCase extends UserUseCase {
-    private final ISecurityConfig security;
+    private final ISecurityConfig securityConfig;
 
-    public ChangePasswordUseCase(IUserGateway gateway, IUserMapper mapper, ISecurityConfig security) {
+    public ChangePasswordUseCase(IUserGateway gateway, IUserMapper mapper, ISecurityConfig securityConfig) {
         super(gateway, mapper);
-        this.security = security;
+        this.securityConfig = securityConfig;
     }
 
     public boolean changePassword(UserChangePasswordInputDTO dto){
         if (!gateway.loginExists(dto.login())) {
             throw new UnauthorizedException() {};
         }
-        String passwordEnconded = security.passwordEncoder(dto.password(), dto.login());
+        String passwordEnconded = securityConfig.passwordEncoder(dto.password(), dto.login());
         return this.gateway.changePassword(passwordEnconded, dto.login());
     }
 }
