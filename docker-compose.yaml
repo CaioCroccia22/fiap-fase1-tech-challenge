@@ -1,4 +1,3 @@
-version: "3.9"
 
 services:
   app:
@@ -13,10 +12,13 @@ services:
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME:-fiapdb}
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:-fiapdb}
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_DATA_MONGODB_URI: mongodb://admin:admin123@mongodb:27017/fiapfase2?authSource=admin
     env_file:
       - local.env
     depends_on:
       db:
+        condition: service_healthy
+      mongodb:
         condition: service_healthy
 
   db:
@@ -43,5 +45,36 @@ services:
       retries: 10
       start_period: 20s
 
+  mongodb:
+    image: mongo:8
+    container_name: mongodb-fiap
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-admin123}
+      MONGO_INITDB_DATABASE: fiapfase2
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test:
+        - CMD
+        - mongosh
+        - --quiet
+        - mongodb://localhost:27017/admin
+        - --username
+        - ${MONGO_ROOT_USERNAME:-admin}
+        - --password
+        - ${MONGO_ROOT_PASSWORD:-admin123}
+        - --authenticationDatabase
+        - admin
+        - --eval
+        - "db.adminCommand('ping').ok"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
 volumes:
   db_data:
+  mongo_data:
