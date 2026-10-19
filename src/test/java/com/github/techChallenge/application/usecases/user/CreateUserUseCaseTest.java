@@ -4,6 +4,7 @@ import com.github.techChallenge.application.gateways.user.IUserGateway;
 import com.github.techChallenge.application.validators.UserValidator;
 import com.github.techChallenge.domain.user.Address;
 import com.github.techChallenge.domain.user.IUserMapper;
+import com.github.techChallenge.domain.user.InvalidUserDataException;
 import com.github.techChallenge.domain.user.User;
 import com.github.techChallenge.domain.user.UserLevel;
 import com.github.techChallenge.domain.user.dto.UserCreateInputDTO;
@@ -15,14 +16,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -70,20 +77,31 @@ class CreateUserUseCaseTest {
                 address, LocalDateTime.now(), LocalDateTime.now());
 
         UserOutputDTO convertedToDTOUser = new UserOutputDTO(createdUser.getId(),
-                        createdUser.getName(), createdUser.getEmail(), createdUser.getLogin(), UserLevel.CUSTOMER,
-                        null, address, createdUser.getCreatedAt(),
-                        createdUser.getUpdatedAt());
+                createdUser.getName(), createdUser.getEmail(), createdUser.getLogin(), UserLevel.CUSTOMER,
+                null, address, createdUser.getCreatedAt(),
+                createdUser.getUpdatedAt());
 
-        //when(gateway.emailExists(any(String.class))).thenReturn(false);
-        //when(gateway.loginExists(any(String.class))).thenReturn(false);
-        when(securityConfig.passwordEncoder(any(String.class), any(String.class))).thenReturn("pitipiripitipiripitipó");
+        when(securityConfig.passwordEncoder("password", "user")).thenReturn("pitipiripitipiripitipó");
         when(gateway.create(any(User.class))).thenReturn(createdUser);
         when(mapper.fromDomainToOutputDTO(createdUser)).thenReturn(convertedToDTOUser);
 
-        UserCreateInputDTO inputDTO = new UserCreateInputDTO("User 1","user@user.com.br",
-                "user","password", address, UserLevel.CUSTOMER);
+        UserCreateInputDTO inputDTO = new UserCreateInputDTO("User 1"," USER@USER.COM.BR ",
+                " USER ","password", address, UserLevel.CUSTOMER);
 
         UserOutputDTO outputDTO = createUserUseCase.execute(inputDTO);
+
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        verify(gateway).create(userCaptor.capture());
+        User userToPersist = userCaptor.getValue();
+
+        verify(userValidator).emailExists("user@user.com.br");
+        verify(userValidator).loginExists("user");
+        verify(securityConfig).passwordEncoder("password", "user");
+        assertEquals("user@user.com.br", userToPersist.getEmail());
+        assertEquals("user", userToPersist.getLogin());
+        assertEquals("pitipiripitipiripitipó", userToPersist.getPassword());
+        assertNotNull(userToPersist.getCreatedAt());
+        assertEquals(userToPersist.getCreatedAt(), userToPersist.getUpdatedAt());
 
         assertNotNull(outputDTO.id());
         assertNotNull(outputDTO.createdAt());
@@ -99,6 +117,27 @@ class CreateUserUseCaseTest {
         assertEquals(createdUser.getAddress().number(), outputDTO.address().number());
         assertEquals(createdUser.getAddress().state(), outputDTO.address().state());
         assertEquals(createdUser.getAddress().zipCode(), outputDTO.address().zipCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidPasswords")
+    @DisplayName("Deve rejeitar senha inválida antes de codificar ou persistir o usuário")
+    void shouldRejectInvalidRawPasswordBeforeEncoding(String password) {
+        UserCreateInputDTO inputDTO = new UserCreateInputDTO(
+                user.getName(), user.getEmail(), user.getLogin(), password,
+                user.getAddress(), user.getUserLevel());
+
+        InvalidUserDataException exception = assertThrows(
+                InvalidUserDataException.class,
+                () -> createUserUseCase.execute(inputDTO));
+
+        assertEquals(1, exception.getViolations().size());
+        assertTrue(exception.getViolations().containsKey("password"));
+        verifyNoInteractions(userValidator, securityConfig, gateway, mapper);
+    }
+
+    private static Stream<String> invalidPasswords() {
+        return Stream.of(null, "", "123", "        ", "s".repeat(101));
     }
 
     @Test
@@ -122,6 +161,7 @@ class CreateUserUseCaseTest {
         UserCreateInputDTO inputDTO = new UserCreateInputDTO("User 1","user@user.com.br",
                 "user","password", address, UserLevel.CUSTOMER);
         assertThrows(EmailAlreadyExistsException.class, () -> createUserUseCase.execute(inputDTO));
+        verifyNoInteractions(securityConfig, gateway, mapper);
 
     }
 
@@ -147,5 +187,6 @@ class CreateUserUseCaseTest {
         UserCreateInputDTO inputDTO = new UserCreateInputDTO("User 1","user@user.com.br",
                 "user","password", address, UserLevel.CUSTOMER);
         assertThrows(LoginAlreadyExistsException.class, () -> createUserUseCase.execute(inputDTO));
+        verifyNoInteractions(securityConfig, gateway, mapper);
     }
 }

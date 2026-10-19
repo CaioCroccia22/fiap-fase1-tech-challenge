@@ -33,20 +33,20 @@ class UserRepositoryGatewayTest {
 
     void shouldCreateANewUserOnDatabase() {
         User user = User.create(
-            "User 1",
+                "User 1",
                 "user@user.com.br",
                 "user",
                 "password",
                 UserLevel.CUSTOMER,
                 new Address(
-                    "Endereço",
-                    "numero",
-                    "complemento",
-                    "01234-567",
-                    "bairro",
-                    "cidade",
-                    "uf",
-                    "Brasil"
+                        "Endereço",
+                        "numero",
+                        "complemento",
+                        "01234-567",
+                        "bairro",
+                        "cidade",
+                        "SP",
+                        "Brasil"
                 )
         );
         User saved = userRepositoryGateway.create(user);
@@ -78,14 +78,14 @@ class UserRepositoryGatewayTest {
         user.update("Usuário alterado", "email alterado", "login alterado",
                 UserLevel.CUSTOMER,
                 new Address(
-                    "endereço alterado",
-                    "numero alterado",
-                    "complemento alterado",
-                    "89101-121",
-                    "Bairro alterado",
-                    "cidade alterado",
-                    "uf alterado",
-                    "Argentina"
+                        "endereço alterado",
+                        "numero alterado",
+                        "complemento alterado",
+                        "89101-121",
+                        "Bairro alterado",
+                        "cidade alterado",
+                        "uf alterado",
+                        "Argentina"
                 ));
         User saved = userRepositoryGateway.update(user, 1L);
 
@@ -114,14 +114,14 @@ class UserRepositoryGatewayTest {
         User user = userRepositoryGateway.findByID(1L);
         user.update("Usuário alterado", "email alterado", "login alterado",
                 UserLevel.CUSTOMER, new Address(
-                    "endereço alterado",
-                    "numero alterado",
-                    "complemento alterado",
-                    "89101-121",
-                    "Bairro alterado",
-                    "cidade alterado",
-                    "uf alterado",
-                    "Argentina"
+                        "endereço alterado",
+                        "numero alterado",
+                        "complemento alterado",
+                        "89101-121",
+                        "Bairro alterado",
+                        "cidade alterado",
+                        "uf alterado",
+                        "Argentina"
                 ));
         assertThrows(UserNotFoundException.class, () ->  userRepositoryGateway.update(user, 4L));
     }
