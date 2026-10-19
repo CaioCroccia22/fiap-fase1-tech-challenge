@@ -3,70 +3,57 @@ package com.github.techChallenge.domain.user.dto;
 import com.github.techChallenge.domain.user.Address;
 import com.github.techChallenge.domain.user.UserLevel;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 public record UserCreateInputDTO(
 
         @Schema(
                 description = "Nome completo do usuário",
-                example = "José da Silva"
-        )
-        @NotBlank(message = "O nome é obrigatório.")
-        @Size(
-                max = 50,
-                message = "O nome deve possuir no máximo 50 caracteres."
+                example = "José da Silva",
+                maxLength = 50,
+                requiredMode = Schema.RequiredMode.REQUIRED
         )
         String name,
 
         @Schema(
                 description = "E-mail do usuário",
-                example = "jose.silva@email.com"
-        )
-        @NotBlank(message = "O e-mail é obrigatório.")
-        @Email(message = "O e-mail possui formato inválido.")
-        @Size(
-                max = 255,
-                message = "O e-mail deve possuir no máximo 255 caracteres."
+                example = "jose.silva@email.com",
+                format = "email",
+                maxLength = 255,
+                requiredMode = Schema.RequiredMode.REQUIRED
         )
         String email,
 
         @Schema(
                 description = "Login do usuário",
-                example = "jose.silva"
-        )
-        @NotBlank(message = "O login é obrigatório.")
-        @Size(
-                min = 4,
-                max = 100,
-                message = "O login deve possuir entre 4 e 100 caracteres."
+                example = "jose.silva",
+                minLength = 4,
+                maxLength = 100,
+                requiredMode = Schema.RequiredMode.REQUIRED
         )
         String login,
 
         @Schema(
                 description = "Senha do usuário",
                 example = "Senha@123",
+                minLength = 8,
+                maxLength = 100,
+                requiredMode = Schema.RequiredMode.REQUIRED,
                 accessMode = Schema.AccessMode.WRITE_ONLY
-        )
-        @NotBlank(message = "A senha é obrigatória.")
-        @Size(
-                min = 8,
-                max = 100,
-                message = "A senha deve possuir entre 8 e 100 caracteres."
         )
         String password,
 
-        @Schema(description = "Endereço do usuário", implementation = Address.class)
-        @NotNull(message = "O endereço é obrigatório.")
-        @Valid
+        @Schema(
+                description = "Endereço do usuário",
+                implementation = Address.class,
+                requiredMode = Schema.RequiredMode.REQUIRED
+        )
         Address address,
 
-        @Schema(description = "Nível de usuário", allowableValues = {"OWNER", "CUSTOMER"})
-        @NotNull(message = "O nível de usuário é obrigatório.")
-        @Valid
+        @Schema(
+                description = "Nível de usuário",
+                allowableValues = {"OWNER", "CUSTOMER"},
+                requiredMode = Schema.RequiredMode.REQUIRED
+        )
         UserLevel userLevel
 
 ) {
