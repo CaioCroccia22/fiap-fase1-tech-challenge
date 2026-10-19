@@ -23,23 +23,26 @@ public class CreateUserUseCase extends UserUseCase {
     }
 
     public UserOutputDTO execute(UserCreateInputDTO dto) {
-
-        if (validator.emailExists(dto.email()))
-            throw new EmailAlreadyExistsException();
-
-        if (validator.loginExists(dto.login()))
-            throw new LoginAlreadyExistsException();
-
         User user = User.create(
                 dto.name(),
                 dto.email(),
                 dto.login(),
-                securityConfig.passwordEncoder(dto.password(), dto.login()),
+                dto.password(),
                 dto.userLevel(),
                 dto.address());
 
+        if (validator.emailExists(user.getEmail())) {
+            throw new EmailAlreadyExistsException();
+        }
 
-        user = this.gateway.create(user);
-        return this.mapper.fromDomainToOutputDTO(user);
+        if (validator.loginExists(user.getLogin())) {
+            throw new LoginAlreadyExistsException();
+        }
+
+        user.encodePassword(rawPassword ->
+                securityConfig.passwordEncoder(rawPassword, user.getLogin()));
+
+        User savedUser = this.gateway.create(user);
+        return this.mapper.fromDomainToOutputDTO(savedUser);
     }
 }
