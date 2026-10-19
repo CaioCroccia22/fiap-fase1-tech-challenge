@@ -42,9 +42,25 @@ class UserTest {
     }
 
     @Test
-    @DisplayName("Deve Lançar uma exceção devido a dados inválidos durante a criação")
+    @DisplayName("Deve lançar exceção por dados inválidos na criação")
     void shouldThrowAnExceptionDueToInvalidDataDuringCreation() {
-        fail("implementar método de validação na entidade, e chamar ele na hora de criar um novo usuário");
+
+        InvalidUserDataException exception = assertThrows(
+                InvalidUserDataException.class,
+                () -> User.create(
+                        "",
+                        "user@user.com.br",
+                        "user",
+                        "password",
+                        UserLevel.CUSTOMER,
+                        user.getAddress()
+                )
+        );
+
+        assertEquals(
+                "O nome é obrigatório.",
+                exception.getViolations().get("name")
+        );
     }
 
     @Test

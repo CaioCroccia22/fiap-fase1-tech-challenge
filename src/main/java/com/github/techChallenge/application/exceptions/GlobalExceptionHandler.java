@@ -1,5 +1,6 @@
 package com.github.techChallenge.application.exceptions;
 
+import com.github.techChallenge.domain.user.InvalidUserDataException;
 import com.github.techChallenge.shared.ConflictException;
 import com.github.techChallenge.shared.NotFoundException;
 import com.github.techChallenge.shared.UnauthorizedException;
@@ -176,6 +177,29 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
     }
 
+    @ExceptionHandler(InvalidUserDataException.class)
+    public ResponseEntity<ProblemDetail> handleInvalidUserData(
+            InvalidUserDataException exception,
+            HttpServletRequest request
+    ) {
+        ProblemDetail problemDetail = problemDetailFactory.create(
+                HttpStatus.BAD_REQUEST,
+                "Dados inválidos",
+                exception.getMessage(),
+                "VALIDATION_ERROR",
+                request
+        );
+
+        problemDetail.setProperty(
+                "violations",
+                exception.getViolations()
+        );
+
+        return ResponseEntity
+                .badRequest()
+                .body(problemDetail);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException exception,
@@ -189,10 +213,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .getBindingResult()
                 .getFieldErrors()
                 .forEach(error ->
-                    violations.putIfAbsent(
-                        error.getField(),
-                        error.getDefaultMessage()
-                    )
+                        violations.putIfAbsent(
+                                error.getField(),
+                                error.getDefaultMessage()
+                        )
                 );
 
         ProblemDetail problemDetail = problemDetailFactory.create(
@@ -228,7 +252,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 request
         );
     }
-
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(
